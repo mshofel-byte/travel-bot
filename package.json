@@ -1,0 +1,13 @@
+{
+  "name": "travel-agent-bot",
+  "version": "1.0.0",
+  "description": "סוכן טיולים חכם לטלגרם",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "node-telegram-bot-api": "^0.66.0",
+    "@anthropic-ai/sdk": "^0.39.0"
+  }
+}
