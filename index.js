@@ -2,8 +2,8 @@ const TelegramBot = require("node-telegram-bot-api");
 const Anthropic = require("@anthropic-ai/sdk");
 
 // ← שים כאן את הטוקנים שלך
-const TELEGRAM_TOKEN = "YOUR_TELEGRAM_BOT_TOKEN";
-const ANTHROPIC_API_KEY = "YOUR_ANTHROPIC_API_KEY";
+const TELEGRAM_TOKEN = process.env.TELEGRAM_TOKEN
+const ANTHROPIC_API_KEY = process.env.ANTHROPIC_API_KEY
 
 const bot = new TelegramBot(TELEGRAM_TOKEN, { polling: true });
 const anthropic = new Anthropic({ apiKey: ANTHROPIC_API_KEY });
