@@ -1,4 +1,4 @@
-const TelegramBot = require("node-telegram-bot-api");
+const TelegramBot = require("node-telegram-bot-api"); 
 const Anthropic = require("@anthropic-ai/sdk");
 
 const TELEGRAM_TOKEN = process.env.TELEGRAM_TOKEN;
