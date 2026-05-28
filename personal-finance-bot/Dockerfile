@@ -26,8 +26,8 @@ RUN apt-get update && apt-get install -y \
 WORKDIR /app
 COPY package.json ./
 RUN npm install && \
-    sed -i "s/throw new Error(\`Unknown transaction type \${cleanedUpTxnTypeStr}\`)/return _transactions2.TransactionTypes.Normal/" \
-    node_modules/israeli-bank-scrapers/lib/scrapers/max.js
+    node -e "const fs=require('fs'),f='node_modules/israeli-bank-scrapers/lib/scrapers/max.js',c=fs.readFileSync(f,'utf8');fs.writeFileSync(f,c.replace('throw new Error(\`Unknown transaction type \${cleanedUpTxnTypeStr}\`)','return _transactions2.TransactionTypes.Normal'));"
+COPY . .
 
 ENV NODE_ENV=production
 CMD ["node", "index.js"]
