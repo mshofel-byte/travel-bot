@@ -476,6 +476,7 @@ app.post("/webhook", async (req, res) => {
   res.status(200).send("<Response/>");
 });
 
+app.get("/webhook", (req, res) => res.status(200).send("<Response/>"));
 app.get("/health", (req, res) => res.json({ status: "ok" }));
 
 // Daily sync at 7:00 AM
