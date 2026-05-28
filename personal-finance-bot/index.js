@@ -129,6 +129,28 @@ const COMPANY_LIST = Object.entries(COMPANIES)
 
 // ── Sync ─────────────────────────────────────────────────────────────────────
 
+const CATEGORY_RULES = [
+  { pattern: /שופרסל|רמי לוי|ויקטורי|מגה|סיטי מרקט|יינות ביתן|AM:PM|פרש מרקט|קרפור|סופר|מינימרקט|מכולת/i, category: "מזון וסופרמרקט" },
+  { pattern: /פז|דלק|סונול|כיבד|אורן|גז סטציה|תחנת דלק/i, category: "דלק ורכב" },
+  { pattern: /מסעדה|שווארמה|פיצה|סושי|בורגר|מקדונלד|ארומה|קפה|קפה קפה|גרג|תבלין|שניצל|בית קפה/i, category: "מסעדות וקפה" },
+  { pattern: /מכבי|כללית|לאומית|קופת חולים|רפואה|בית מרקחת|סופר פארם|NEW PHARM|פארם|רוקח|שיניים|פיזיו/i, category: "בריאות ורפואה" },
+  { pattern: /זארה|H&M|קסטרו|פוקס|גולברי|רנואר|בגד|נעל|אופנה|ביגוד/i, category: "ביגוד ואופנה" },
+  { pattern: /HOT|yes|NETFLIX|SPOTIFY|APPLE|GOOGLE|אמזון|AMAZON|בידור|קולנוע|תיאטרון/i, category: "בידור ומנויים" },
+  { pattern: /רב.קו|אוטובוס|רכבת|מונית|UBER|GETT|גט|תחבורה|חניה/i, category: "תחבורה" },
+  { pattern: /חשמל|מים|גז|בזק|סלקום|פרטנר|HOT MOBILE|019|012|תשתית|ארנונה/i, category: "חשבונות ותשתיות" },
+  { pattern: /גן|בית ספר|אוניברסיטה|מכללה|לימוד|חינוך|שכר לימוד/i, category: "חינוך" },
+  { pattern: /ביטוח|מגדל|הראל|כלל|מנורה|הפניקס/i, category: "ביטוח" },
+  { pattern: /AMAZON|ALIEXPRESS|אמזון|אלי|שופינג|קניון|חנות/i, category: "קניות" },
+];
+
+function autoCategory(description) {
+  if (!description) return "אחר";
+  for (const rule of CATEGORY_RULES) {
+    if (rule.pattern.test(description)) return rule.category;
+  }
+  return "אחר";
+}
+
 async function syncAccount(householdId, companyId, credsEnc) {
   const credentials = JSON.parse(decrypt(credsEnc));
   const startDate = new Date(new Date().getFullYear(), new Date().getMonth() - 1, 1);
@@ -138,10 +160,11 @@ async function syncAccount(householdId, companyId, credsEnc) {
   for (const account of accounts) {
     for (const txn of account.txns) {
       const id = `${companyId}_${account.accountNumber}_${txn.identifier || txn.date + "_" + txn.chargedAmount + "_" + (txn.description || "")}`;
+      const category = autoCategory(txn.description);
       await pool.query(
         `INSERT INTO transactions
            (identifier, household_id, company_id, account_number, date, processed_date, amount, description, memo, category, status)
-         VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,'אחר',$10)
+         VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11)
          ON CONFLICT (identifier, household_id) DO NOTHING`,
         [
           id, householdId, companyId, account.accountNumber,
@@ -150,6 +173,7 @@ async function syncAccount(householdId, companyId, credsEnc) {
           txn.chargedAmount,
           txn.description,
           txn.memo || null,
+          category,
           txn.status || "completed",
         ]
       );
@@ -455,6 +479,26 @@ app.post("/webhook", async (req, res) => {
       const results = await syncAllHousehold(user.household_id);
       const lines = results.map((r) => r.success ? `✅ ${r.company}: ${r.transactions} עסקאות` : `❌ ${r.company}: ${r.error}`);
       await send(from, "סנכרון הושלם!\n\n" + lines.join("\n"));
+      return;
+    }
+
+    if (text === "סווג" || text === "/categorize") {
+      const rows = await pool.query(
+        "SELECT identifier, description FROM transactions WHERE household_id=$1 AND category='אחר'",
+        [user.household_id]
+      );
+      let updated = 0;
+      for (const row of rows.rows) {
+        const cat = autoCategory(row.description);
+        if (cat !== "אחר") {
+          await pool.query(
+            "UPDATE transactions SET category=$1 WHERE identifier=$2 AND household_id=$3",
+            [cat, row.identifier, user.household_id]
+          );
+          updated++;
+        }
+      }
+      await send(from, `✅ סווגו מחדש ${updated} עסקאות מתוך ${rows.rows.length}.`);
       return;
     }
 
