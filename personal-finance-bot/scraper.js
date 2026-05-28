@@ -3,8 +3,16 @@ const puppeteer = require("puppeteer");
 
 async function scrapeAccount(companyId, credentials, startDate) {
   const browser = await puppeteer.launch({
-    args: ["--no-sandbox", "--disable-setuid-sandbox", "--disable-dev-shm-usage"],
+    args: [
+      "--no-sandbox",
+      "--disable-setuid-sandbox",
+      "--disable-dev-shm-usage",
+      "--disable-gpu",
+      "--single-process",
+      "--no-zygote",
+    ],
     headless: true,
+    timeout: 60000,
   });
 
   try {
@@ -14,6 +22,7 @@ async function scrapeAccount(companyId, credentials, startDate) {
       combineInstallments: false,
       showBrowser: false,
       browser,
+      timeout: 60000,
     });
 
     const result = await scraper.scrape(credentials);
