@@ -118,6 +118,7 @@ async function saveUser(phone, data) {
 const COMPANIES = {
   discount:   { name: "בנק דיסקונט",         fields: ["id (תעודת זהות)", "password (סיסמה)", "num (מספר חשבון)"], keys: ["id", "password", "num"] },
   mercantile: { name: "מרכנתיל דיסקונט",     fields: ["id (תעודת זהות)", "password (סיסמה)", "num (מספר חשבון)"], keys: ["id", "password", "num"] },
+  leumi:      { name: "בנק לאומי",            fields: ["username (שם משתמש)", "password (סיסמה)"],              keys: ["username", "password"] },
   max:        { name: "מקס",                  fields: ["username (שם משתמש)", "password (סיסמה)"],              keys: ["username", "password"] },
   visaCal:    { name: "ויזה כאל",             fields: ["username (שם משתמש)", "password (סיסמה)"],              keys: ["username", "password"] },
 };
