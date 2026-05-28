@@ -4,7 +4,7 @@
   "description": "בוט פיננסי אישי לוואצאפ",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js"
+    "start": "sh start.sh"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.39.0",
