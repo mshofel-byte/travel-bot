@@ -333,10 +333,16 @@ async function runClaude(householdId, text) {
 
 // ── Setup flow ────────────────────────────────────────────────────────────────
 
+const GREETING_RE = /^(שלום|היי|הי|מה שלומך|מה נשמע|בוקר טוב|ערב טוב|צהריים טוב|לילה טוב|hi|hello|hey)[\s!?.]*$/i;
+
 async function handleSetupFlow(phone, user, text) {
   const { state, state_data: sd } = user;
 
   if (state === "awaiting_name") {
+    if (GREETING_RE.test(text.trim())) {
+      await send(phone, "שלום! 😊\n\nאני כספי, הבוט הפיננסי שלך.\nמה שמך? (שלח רק את שמך)");
+      return;
+    }
     const name = text.trim();
     user.name = name;
     user.state = "awaiting_household";
@@ -426,9 +432,10 @@ function send(to, body) {
 }
 
 app.post("/webhook", async (req, res) => {
+  res.status(200).send("<Response/>"); // respond immediately so Twilio doesn't timeout
   const from = req.body.From;
   const text = req.body.Body?.trim();
-  if (!from || !text) return res.status(200).send("<Response/>");
+  if (!from || !text) return;
 
   try {
     let user = await getUser(from);
@@ -436,7 +443,7 @@ app.post("/webhook", async (req, res) => {
     if (!user) {
       await saveUser(from, { state: "awaiting_name" });
       await send(from, "שלום! אני כספי 💰 הבוט הפיננסי שלך.\n\nמה שמך?");
-      return res.status(200).send("<Response/>");
+      return;
     }
 
     if (text === "/sync" || text === "סנכרן") {
@@ -444,36 +451,34 @@ app.post("/webhook", async (req, res) => {
       const results = await syncAllHousehold(user.household_id);
       const lines = results.map((r) => r.success ? `✅ ${r.company}: ${r.transactions} עסקאות` : `❌ ${r.company}: ${r.error}`);
       await send(from, "סנכרון הושלם!\n\n" + lines.join("\n"));
-      return res.status(200).send("<Response/>");
+      return;
     }
 
     if (text === "הוסף חשבון" || text === "/addbank") {
       user.state = "adding_bank_select";
       await saveUser(from, user);
       await send(from, "איזה חשבון להוסיף?\n\n" + COMPANY_LIST);
-      return res.status(200).send("<Response/>");
+      return;
     }
 
     if (text === "/invite") {
       const res2 = await pool.query("SELECT invite_code FROM households WHERE id=$1", [user.household_id]);
       await send(from, `קוד הזמנה: *${res2.rows[0]?.invite_code}*\n\nשלח אותו לבן/בת הזוג.`);
-      return res.status(200).send("<Response/>");
+      return;
     }
 
     if (["awaiting_name", "awaiting_household", "adding_bank_select", "adding_bank_creds"].includes(user.state)) {
       await handleSetupFlow(from, user, text);
-      return res.status(200).send("<Response/>");
+      return;
     }
 
     const reply = await runClaude(user.household_id, text);
     await send(from, reply);
 
   } catch (err) {
-    console.error("Error:", err.message);
-    await send(from, "אופס, משהו השתבש. נסה שוב.");
+    console.error("Webhook error:", err.message);
+    try { await send(from, "אופס, משהו השתבש. נסה שוב."); } catch {}
   }
-
-  res.status(200).send("<Response/>");
 });
 
 app.get("/webhook", (req, res) => res.status(200).send("<Response/>"));
@@ -493,6 +498,11 @@ cron.schedule("0 7 * * *", async () => {
   }
 });
 
-initDB().then(() => {
-  app.listen(PORT, () => console.log(`Personal finance bot running on port ${PORT}`));
-});
+initDB()
+  .then(() => {
+    app.listen(PORT, () => console.log(`Bot running on port ${PORT}`));
+  })
+  .catch((err) => {
+    console.error("DB init error:", err.message);
+    app.listen(PORT, () => console.log(`Bot running on port ${PORT} (DB error - check DATABASE_URL)`));
+  });
