@@ -25,8 +25,21 @@ async function scrapeAccount(companyId, credentials, startDate) {
       timeout: 60000,
     });
 
-    const result = await scraper.scrape(credentials);
-    if (!result.success) throw new Error(result.errorMessage || "Scraping failed");
+    let result;
+    try {
+      result = await scraper.scrape(credentials);
+    } catch (scrapeErr) {
+      if (scrapeErr.message && scrapeErr.message.includes("Unknown transaction type")) {
+        return [];
+      }
+      throw scrapeErr;
+    }
+    if (!result.success) {
+      if (result.errorMessage && result.errorMessage.includes("Unknown transaction type")) {
+        return result.accounts || [];
+      }
+      throw new Error(result.errorMessage || "Scraping failed");
+    }
     return result.accounts || [];
   } finally {
     await browser.close().catch(() => {});
