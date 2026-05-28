@@ -333,10 +333,16 @@ async function runClaude(householdId, text) {
 
 // ── Setup flow ────────────────────────────────────────────────────────────────
 
+const GREETING_RE = /^(שלום|היי|הי|מה שלומך|מה נשמע|בוקר טוב|ערב טוב|צהריים טוב|לילה טוב|hi|hello|hey)[\s!?.]*$/i;
+
 async function handleSetupFlow(phone, user, text) {
   const { state, state_data: sd } = user;
 
   if (state === "awaiting_name") {
+    if (GREETING_RE.test(text.trim())) {
+      await send(phone, "שלום! 😊\n\nאני כספי, הבוט הפיננסי שלך.\nמה שמך? (שלח רק את שמך)");
+      return;
+    }
     const name = text.trim();
     user.name = name;
     user.state = "awaiting_household";
@@ -470,12 +476,13 @@ app.post("/webhook", async (req, res) => {
 
   } catch (err) {
     console.error("Error:", err.message);
-    await send(from, "אופס, משהו השתבש. נסה שוב.");
+    try { await send(from, "אופס, משהו השתבש. נסה שוב."); } catch {}
   }
 
   res.status(200).send("<Response/>");
 });
 
+app.get("/webhook", (req, res) => res.status(200).send("<Response/>"));
 app.get("/health", (req, res) => res.json({ status: "ok" }));
 
 // Daily sync at 7:00 AM
