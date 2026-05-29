@@ -24,17 +24,27 @@ const NEW_LOGIN_OPTIONS = `getLoginOptions(credentials) {
         const pg = _self.page;
         // Wait for at least one input to appear
         await pg.waitForFunction(() => document.querySelector('input') !== null, { timeout: 60000 });
-        // Fill username in first visible input
-        const _i0 = await pg.$$('input:not([type="hidden"])');
-        await _i0[0].click({ clickCount: 3 });
-        await _i0[0].type(credentials.username);
-        // Wait for password field to appear (form may be dynamic)
+        // Fill username via JS eval (bypasses React/Angular clickability checks)
+        await pg.evaluate((val) => {
+          const inputs = [...document.querySelectorAll('input:not([type="hidden"])')];
+          const el = inputs[0];
+          const nativeSet = Object.getOwnPropertyDescriptor(window.HTMLInputElement.prototype, 'value').set;
+          nativeSet.call(el, val);
+          el.dispatchEvent(new Event('input', { bubbles: true }));
+          el.dispatchEvent(new Event('change', { bubbles: true }));
+        }, credentials.username);
+        // Wait for password field (form may be dynamic)
         await pg.waitForTimeout(2000);
         await pg.waitForFunction(() => document.querySelectorAll('input:not([type="hidden"])').length >= 2, { timeout: 30000 });
-        // Fill password in second visible input
-        const _i1 = await pg.$$('input:not([type="hidden"])');
-        await _i1[1].click({ clickCount: 3 });
-        await _i1[1].type(credentials.password);
+        // Fill password via JS eval
+        await pg.evaluate((val) => {
+          const inputs = [...document.querySelectorAll('input:not([type="hidden"])')];
+          const el = inputs[1];
+          const nativeSet = Object.getOwnPropertyDescriptor(window.HTMLInputElement.prototype, 'value').set;
+          nativeSet.call(el, val);
+          el.dispatchEvent(new Event('input', { bubbles: true }));
+          el.dispatchEvent(new Event('change', { bubbles: true }));
+        }, credentials.password);
       },
       postAction: async () => waitForPostLogin(_self.page),
       possibleResults: getPossibleLoginResults()
