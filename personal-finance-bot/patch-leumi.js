@@ -8,7 +8,26 @@ c = c.replace(
   "const LOGIN_URL = 'https://hb2.bankleumi.co.il/H/Login.html';"
 );
 
-// Fix 2: Replace getLoginOptions to handle the full login flow ourselves.
+// Fix 2: Replace waitForPostLogin — old selectors no longer exist on the page.
+// Simply wait for navigation away from the login page; the base scraper checks
+// the resulting URL against possibleResults afterwards.
+const OLD_POST_LOGIN = /async function waitForPostLogin\(page\) \{[\s\S]*?\n\}/;
+const NEW_POST_LOGIN = `async function waitForPostLogin(page) {
+  await page.waitForFunction(
+    () => !window.location.href.includes('/H/Login.html'),
+    { timeout: 60000 }
+  ).catch(() => {});
+}`;
+
+let patched = c.replace(OLD_POST_LOGIN, NEW_POST_LOGIN);
+if (patched === c) {
+  console.warn('WARNING: waitForPostLogin patch did not match - skipping');
+} else {
+  c = patched;
+  console.log('Leumi patch 2 applied: simplified waitForPostLogin');
+}
+
+// Fix 3: Replace getLoginOptions to handle the full login flow ourselves.
 // Leumi's form is dynamic — password field may only appear after username is typed.
 // We fill both fields manually in checkReadiness using index-based selection,
 // then the base scraper clicks the submit button.
@@ -51,11 +70,12 @@ const NEW_LOGIN_OPTIONS = `getLoginOptions(credentials) {
     };
   }`;
 
-const patched = c.replace(OLD_LOGIN_OPTIONS, () => NEW_LOGIN_OPTIONS);
-
+patched = c.replace(OLD_LOGIN_OPTIONS, () => NEW_LOGIN_OPTIONS);
 if (patched === c) {
-  console.warn('WARNING: getLoginOptions patch did not match - skipping (version mismatch?)');
+  console.warn('WARNING: getLoginOptions patch did not match - skipping');
 } else {
-  fs.writeFileSync(f, patched);
-  console.log('Leumi patch applied: custom login flow with index-based field selection');
+  c = patched;
+  console.log('Leumi patch 3 applied: custom login flow with index-based field selection');
 }
+
+fs.writeFileSync(f, c);

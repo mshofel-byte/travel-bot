@@ -33,6 +33,13 @@ async function scrapeAccount(companyId, credentials, startDate) {
       browser,
       timeout: 60000,
       defaultTimeout: 60000,
+      preparePage: async (page) => {
+        page.on('framenavigated', (frame) => {
+          if (frame === page.mainFrame()) {
+            console.log(`[${companyId}] → ${frame.url()}`);
+          }
+        });
+      },
     });
 
     let result;
