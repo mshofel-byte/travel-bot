@@ -5,7 +5,7 @@ const StealthPlugin = require("puppeteer-extra-plugin-stealth");
 puppeteerExtra.use(StealthPlugin());
 
 // Only use stealth for sites that have anti-bot protection
-const STEALTH_COMPANIES = new Set(["leumi", "visaCal"]);
+const STEALTH_COMPANIES = new Set(["leumi", "visaCal", "discount", "mercantile"]);
 
 const LAUNCH_ARGS = [
   "--no-sandbox",
