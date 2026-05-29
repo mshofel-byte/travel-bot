@@ -24,9 +24,10 @@ RUN apt-get update && apt-get install -y \
     && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
-COPY package.json ./
+COPY package.json patch-leumi.js ./
 RUN npm install && \
-    node -e "const fs=require('fs'),f='node_modules/israeli-bank-scrapers/lib/scrapers/max.js',c=fs.readFileSync(f,'utf8');fs.writeFileSync(f,c.replace('throw new Error(\`Unknown transaction type \${cleanedUpTxnTypeStr}\`)','return _transactions2.TransactionTypes.Normal'));"
+    node -e "const fs=require('fs'),f='node_modules/israeli-bank-scrapers/lib/scrapers/max.js',c=fs.readFileSync(f,'utf8');fs.writeFileSync(f,c.replace('throw new Error(\`Unknown transaction type \${cleanedUpTxnTypeStr}\`)','return _transactions2.TransactionTypes.Normal'));" && \
+    node patch-leumi.js
 COPY . .
 
 ENV NODE_ENV=production
