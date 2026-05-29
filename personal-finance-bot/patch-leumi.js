@@ -16,10 +16,7 @@ c = c.replace(
 const OLD_NAVIGATE_FN = /async function navigateToLogin\(page\) \{[\s\S]*?\n\}/;
 
 const NEW_NAVIGATE_FN = `async function navigateToLogin(page) {
-  await Promise.all([
-    (0, _elementsInteractions.waitUntilElementFound)(page, 'input[autocomplete="username"], input[type="text"]:first-of-type, #uid', true, 60000),
-    (0, _elementsInteractions.waitUntilElementFound)(page, 'input[name="password"], input[type="password"]', true, 60000),
-  ]);
+  await page.waitForFunction(() => document.querySelector('input') !== null, { timeout: 60000 });
 }`;
 
 const patched = c.replace(OLD_NAVIGATE_FN, NEW_NAVIGATE_FN);
@@ -31,8 +28,8 @@ if (patched === c) {
 
 // Also update createLoginFields to use the new input selectors
 const patched2 = patched
-  .replace(`selector: 'input[placeholder="שם משתמש"]'`, `selector: 'input[autocomplete="username"], input[type="text"]:first-of-type, #uid'`)
-  .replace(`selector: 'input[placeholder="סיסמה"]'`, `selector: 'input[name="password"], input[type="password"]'`);
+  .replace(`selector: 'input[placeholder="שם משתמש"]'`, `selector: 'input[type="text"]:not([type="hidden"]), input[type="number"], input:not([type])'`)
+  .replace(`selector: 'input[placeholder="סיסמה"]'`, `selector: 'input[type="password"]'`);
 
 fs.writeFileSync(f, patched2);
 console.log('Leumi patch applied successfully');
