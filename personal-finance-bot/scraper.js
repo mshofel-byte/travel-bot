@@ -23,6 +23,7 @@ async function scrapeAccount(companyId, credentials, startDate) {
       showBrowser: false,
       browser,
       timeout: 60000,
+      defaultTimeout: 60000,
     });
 
     let result;
