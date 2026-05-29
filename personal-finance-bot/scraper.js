@@ -1,18 +1,25 @@
 const { createScraper } = require("israeli-bank-scrapers");
-const puppeteer = require("puppeteer-extra");
+const puppeteerRegular = require("puppeteer");
+const puppeteerExtra = require("puppeteer-extra");
 const StealthPlugin = require("puppeteer-extra-plugin-stealth");
-puppeteer.use(StealthPlugin());
+puppeteerExtra.use(StealthPlugin());
+
+// Only use stealth for sites that have anti-bot protection
+const STEALTH_COMPANIES = new Set(["leumi", "visaCal"]);
+
+const LAUNCH_ARGS = [
+  "--no-sandbox",
+  "--disable-setuid-sandbox",
+  "--disable-dev-shm-usage",
+  "--disable-gpu",
+  "--single-process",
+  "--no-zygote",
+];
 
 async function scrapeAccount(companyId, credentials, startDate) {
+  const puppeteer = STEALTH_COMPANIES.has(companyId) ? puppeteerExtra : puppeteerRegular;
   const browser = await puppeteer.launch({
-    args: [
-      "--no-sandbox",
-      "--disable-setuid-sandbox",
-      "--disable-dev-shm-usage",
-      "--disable-gpu",
-      "--single-process",
-      "--no-zygote",
-    ],
+    args: LAUNCH_ARGS,
     headless: true,
     timeout: 60000,
   });
