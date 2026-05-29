@@ -34,7 +34,7 @@ const NEW_LOGIN_OPTIONS = `getLoginOptions(credentials) {
           el.dispatchEvent(new Event('change', { bubbles: true }));
         }, credentials.username);
         // Wait for password field (form may be dynamic)
-        await pg.waitForTimeout(2000);
+        await new Promise(r => setTimeout(r, 2000));
         await pg.waitForFunction(() => document.querySelectorAll('input:not([type="hidden"])').length >= 2, { timeout: 30000 });
         // Fill password via JS eval
         await pg.evaluate((val) => {
