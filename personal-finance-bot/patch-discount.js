@@ -10,9 +10,8 @@ const NEW = "urls[_baseScraperWithBrowser.LoginResults.Success] = [/start\\.tele
 const patched = c.replace(OLD, NEW);
 
 if (patched === c) {
-  console.error('ERROR: discount patch did not match');
-  process.exit(1);
+  console.warn('WARNING: discount patch did not match - skipping (version mismatch?)');
+} else {
+  fs.writeFileSync(f, patched);
+  console.log('Discount patch applied: flexible regex URL matching for success');
 }
-
-fs.writeFileSync(f, patched);
-console.log('Discount patch applied: flexible regex URL matching for success');

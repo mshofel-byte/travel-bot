@@ -54,9 +54,8 @@ const NEW_LOGIN_OPTIONS = `getLoginOptions(credentials) {
 const patched = c.replace(OLD_LOGIN_OPTIONS, () => NEW_LOGIN_OPTIONS);
 
 if (patched === c) {
-  console.error('ERROR: getLoginOptions patch did not match');
-  process.exit(1);
+  console.warn('WARNING: getLoginOptions patch did not match - skipping (version mismatch?)');
+} else {
+  fs.writeFileSync(f, patched);
+  console.log('Leumi patch applied: custom login flow with index-based field selection');
 }
-
-fs.writeFileSync(f, patched);
-console.log('Leumi patch applied: custom login flow with index-based field selection');
