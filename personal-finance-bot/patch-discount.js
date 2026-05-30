@@ -26,19 +26,23 @@ const NEW_LOGIN = `getLoginOptions(credentials) {
     return {
       loginUrl: \`\${BASE_URL}/login/#/LOGIN_PAGE\`,
       fields: [],
-      submitButtonSelector: '.sendBtn',
+      submitButtonSelector: null,
       checkReadiness: async () => {
         const pg = _self.page;
         await pg.waitForSelector('#tzId', { timeout: 60000 });
-        // Click + type each field to trigger React state updates
-        await pg.click('#tzId');
-        await pg.type('#tzId', credentials.id, { delay: 50 });
-        await pg.click('#tzPassword');
-        await pg.type('#tzPassword', credentials.password, { delay: 50 });
-        await pg.click('#aidnum');
-        await pg.type('#aidnum', credentials.num, { delay: 50 });
-        // Wait for submit button to become active
-        await new Promise(r => setTimeout(r, 1000));
+        // Triple-click to select all existing text, then type to replace
+        await pg.click('#tzId', { clickCount: 3 });
+        await pg.type('#tzId', credentials.id, { delay: 60 });
+        await new Promise(r => setTimeout(r, 300));
+        await pg.click('#tzPassword', { clickCount: 3 });
+        await pg.type('#tzPassword', credentials.password, { delay: 60 });
+        await new Promise(r => setTimeout(r, 300));
+        await pg.click('#aidnum', { clickCount: 3 });
+        await pg.type('#aidnum', credentials.num, { delay: 60 });
+        // Wait for React to process inputs and enable submit
+        await new Promise(r => setTimeout(r, 1500));
+        // Submit by pressing Enter
+        await pg.keyboard.press('Enter');
       },
       postAction: async () => navigateOrErrorLabel(_self.page),
       possibleResults: getPossibleLoginResults()
