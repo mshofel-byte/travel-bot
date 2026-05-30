@@ -52,12 +52,17 @@ const NEW_LOGIN = `getLoginOptions(credentials) {
         await fillField('#tzId', credentials.id);
         await fillField('#tzPassword', credentials.password);
         await fillField('#aidnum', credentials.num);
-        // Blur last field and wait for React to enable submit
-        await pg.keyboard.press('Tab');
+        // Log what's actually in the fields before submitting
+        const vals = await pg.evaluate(() => ({
+          tzId: document.querySelector('#tzId')?.value,
+          aidnum: document.querySelector('#aidnum')?.value,
+        }));
+        console.log('[discount] field values before submit:', JSON.stringify(vals));
+        // Click on #aidnum to focus it, then press Enter to submit
+        await pg.click('#aidnum');
         await new Promise(r => setTimeout(r, 1500));
-        // Submit
         await pg.keyboard.press('Enter');
-        console.log('[discount] form submitted');
+        console.log('[discount] form submitted via Enter');
       },
       postAction: async () => navigateOrErrorLabel(_self.page),
       possibleResults: getPossibleLoginResults()
