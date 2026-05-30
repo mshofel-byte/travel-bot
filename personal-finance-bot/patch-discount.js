@@ -62,14 +62,17 @@ const NEW_LOGIN = `getLoginOptions(credentials) {
         }));
         console.log('[discount] field values before submit:', JSON.stringify(vals));
         await new Promise(r => setTimeout(r, 1000));
-        // Try clicking the submit button; fall back to Enter if not found
-        const sendBtn = await pg.$('.sendBtn');
-        if (sendBtn) {
-          await sendBtn.click();
-          console.log('[discount] form submitted via .sendBtn click');
+        // Try submitting via the button first, fall back to Enter
+        const clicked = await pg.evaluate(() => {
+          const btn = document.querySelector('.sendBtn');
+          if (btn) { btn.click(); return true; }
+          return false;
+        });
+        if (clicked) {
+          console.log('[discount] form submitted via .sendBtn DOM click');
         } else {
           await pg.keyboard.press('Enter');
-          console.log('[discount] form submitted via Enter (sendBtn not found)');
+          console.log('[discount] form submitted via Enter (.sendBtn not found)');
         }
       },
       postAction: async () => {

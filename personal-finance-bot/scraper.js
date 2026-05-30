@@ -70,14 +70,15 @@ async function scrapeAccount(companyId, credentials, startDate) {
   // Warm-up visit for banks with aggressive bot detection.
   // Opening the main page lets the anti-fraud JavaScript (Akamai/Imperva)
   // run and set its cookies before we navigate to the login form.
+  // Use domcontentloaded (not networkidle2) to avoid a 30s wait.
   if (companyId === 'discount' || companyId === 'mercantile') {
     try {
       const warmupPage = await browser.newPage();
       await warmupPage.goto('https://start.telebank.co.il/', {
-        waitUntil: 'networkidle2',
-        timeout: 30000,
+        waitUntil: 'domcontentloaded',
+        timeout: 15000,
       }).catch(() => {});
-      await new Promise(r => setTimeout(r, 3000));
+      await new Promise(r => setTimeout(r, 1500));
       await warmupPage.close().catch(() => {});
       console.log(`[${companyId}] warm-up visit complete`);
     } catch (e) {
@@ -92,8 +93,8 @@ async function scrapeAccount(companyId, credentials, startDate) {
       combineInstallments: false,
       showBrowser: false,
       browser,
-      timeout: 60000,
-      defaultTimeout: 60000,
+      timeout: 90000,
+      defaultTimeout: 90000,
       preparePage: async (page) => {
         page.on('framenavigated', (frame) => {
           if (frame === page.mainFrame()) {
