@@ -5,7 +5,13 @@ const StealthPlugin = require("puppeteer-extra-plugin-stealth");
 puppeteerExtra.use(StealthPlugin());
 
 // Only use stealth for sites that have anti-bot protection
-const STEALTH_COMPANIES = new Set(["leumi", "visaCal"]);
+const STEALTH_COMPANIES = new Set(["leumi", "visaCal", "discount", "mercantile"]);
+
+const PROXY_HOST = process.env.PROXY_HOST;
+const PROXY_PORT = process.env.PROXY_PORT;
+const PROXY_USER = process.env.PROXY_USER;
+const PROXY_PASS = process.env.PROXY_PASS;
+const USE_PROXY = !!(PROXY_HOST && PROXY_PORT && PROXY_USER && PROXY_PASS);
 
 const LAUNCH_ARGS = [
   "--no-sandbox",
@@ -14,6 +20,7 @@ const LAUNCH_ARGS = [
   "--disable-gpu",
   "--single-process",
   "--no-zygote",
+  ...(USE_PROXY ? [`--proxy-server=${PROXY_HOST}:${PROXY_PORT}`] : []),
 ];
 
 async function scrapeAccount(companyId, credentials, startDate) {
@@ -34,6 +41,9 @@ async function scrapeAccount(companyId, credentials, startDate) {
       timeout: 60000,
       defaultTimeout: 60000,
       preparePage: async (page) => {
+        if (USE_PROXY) {
+          await page.authenticate({ username: PROXY_USER, password: PROXY_PASS });
+        }
         page.on('framenavigated', (frame) => {
           if (frame === page.mainFrame()) {
             console.log(`[${companyId}] → ${frame.url()}`);
