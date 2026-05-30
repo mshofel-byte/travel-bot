@@ -51,7 +51,7 @@ async function scrapeAccount(companyId, credentials, startDate) {
   const launchArgs = [
     ...BASE_LAUNCH_ARGS,
     ...(proxyArg ? [] : ["--single-process", "--no-zygote"]),
-    ...(proxyArg ? [`--proxy-server=${proxyArg}`] : []),
+    ...(proxyArg ? [`--proxy-server=${proxyArg}`, "--ignore-certificate-errors"] : []),
   ];
   console.log(`[${companyId}] args: ${launchArgs.join(' ')}`);
 
