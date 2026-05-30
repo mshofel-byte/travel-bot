@@ -31,11 +31,16 @@ async function scrapeAccount(companyId, credentials, startDate) {
   let localProxyUrl = null;
   if (USE_PROXY) {
     try {
-      const upstreamUrl = `http://${PROXY_USER}:${PROXY_PASS}@${PROXY_HOST}:${PROXY_PORT}`;
+      console.log(`[proxy-debug] host="${PROXY_HOST}" len=${PROXY_HOST.length}`);
+      console.log(`[proxy-debug] port="${PROXY_PORT}" len=${PROXY_PORT.length}`);
+      console.log(`[proxy-debug] user len=${PROXY_USER.length}`);
+      console.log(`[proxy-debug] pass len=${PROXY_PASS.length}`);
+      const upstreamUrl = `http://${encodeURIComponent(PROXY_USER)}:${encodeURIComponent(PROXY_PASS)}@${PROXY_HOST}:${PROXY_PORT}`;
+      console.log(`[proxy-debug] url=http://***:***@${PROXY_HOST}:${PROXY_PORT}`);
       localProxyUrl = await ProxyChain.anonymizeProxy(upstreamUrl);
       console.log(`[${companyId}] proxy tunnel: ${localProxyUrl}`);
     } catch (e) {
-      console.error(`[${companyId}] proxy-chain FAILED: ${e.stack}`);
+      console.error(`[${companyId}] proxy-chain FAILED: ${e.message}`);
       throw e;
     }
   }
