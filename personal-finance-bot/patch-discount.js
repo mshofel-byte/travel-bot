@@ -62,13 +62,18 @@ const NEW_LOGIN = `getLoginOptions(credentials) {
         }));
         console.log('[discount] field values before submit:', JSON.stringify(vals));
         await new Promise(r => setTimeout(r, 1000));
-        await pg.keyboard.press('Enter');
-        console.log('[discount] form submitted via Enter');
+        // Try clicking the submit button; fall back to Enter if not found
+        const sendBtn = await pg.$('.sendBtn');
+        if (sendBtn) {
+          await sendBtn.click();
+          console.log('[discount] form submitted via .sendBtn click');
+        } else {
+          await pg.keyboard.press('Enter');
+          console.log('[discount] form submitted via Enter (sendBtn not found)');
+        }
       },
       postAction: async () => {
         // Poll until URL leaves the login page (or 15s timeout).
-        // This avoids the race condition in waitForNavigation where the
-        // navigation from Enter may already be done before postAction runs.
         for (let i = 0; i < 30; i++) {
           const url = await _self.page.evaluate(() => window.location.href);
           if (!url.toLowerCase().includes('/login')) {
@@ -77,8 +82,14 @@ const NEW_LOGIN = `getLoginOptions(credentials) {
           }
           await new Promise(r => setTimeout(r, 500));
         }
+        // Log error message shown on page to help diagnose wrong-credential vs bot-block
+        const errorText = await _self.page.evaluate(() => {
+          const el = document.querySelector('.error-message, #general-error, [class*="error"], [class*="Error"]');
+          return el ? el.innerText : null;
+        });
+        if (errorText) console.log('[discount] error on page:', errorText);
         const url = await _self.page.evaluate(() => window.location.href);
-        console.log('[discount] post-login URL (still on login page - wrong credentials or error):', url);
+        console.log('[discount] post-login URL (still on login page):', url);
       },
       possibleResults: getPossibleLoginResults()
     };
