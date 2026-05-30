@@ -39,27 +39,20 @@ const NEW_LOGIN = `getLoginOptions(credentials) {
           console.log('[discount/mercantile] URL:', pg.url());
           throw e;
         });
-        // Ctrl+A selects existing text, type() replaces it with real keyboard events
-        // that React's synthetic event system recognizes
-        async function fillField(selector, value) {
-          await pg.click(selector);
-          await pg.keyboard.down('Control');
-          await pg.keyboard.press('KeyA');
-          await pg.keyboard.up('Control');
-          await pg.type(selector, value, { delay: 80 });
-          await new Promise(r => setTimeout(r, 200));
-        }
-        await fillField('#tzId', credentials.id);
-        await fillField('#tzPassword', credentials.password);
-        await fillField('#aidnum', credentials.num);
-        // Log what's actually in the fields before submitting
+        // Simple click+type — fields are empty on fresh page load
+        await pg.click('#tzId');
+        await pg.type('#tzId', credentials.id, { delay: 80 });
+        await pg.click('#tzPassword');
+        await pg.type('#tzPassword', credentials.password, { delay: 80 });
+        await pg.click('#aidnum');
+        await pg.type('#aidnum', credentials.num, { delay: 80 });
+        // Log all field values (password as length only)
         const vals = await pg.evaluate(() => ({
           tzId: document.querySelector('#tzId')?.value,
+          tzPasswordLen: document.querySelector('#tzPassword')?.value?.length,
           aidnum: document.querySelector('#aidnum')?.value,
         }));
         console.log('[discount] field values before submit:', JSON.stringify(vals));
-        // Click on #aidnum to focus it, then press Enter to submit
-        await pg.click('#aidnum');
         await new Promise(r => setTimeout(r, 1500));
         await pg.keyboard.press('Enter');
         console.log('[discount] form submitted via Enter');
