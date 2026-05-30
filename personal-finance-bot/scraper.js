@@ -25,26 +25,30 @@ const BASE_LAUNCH_ARGS = [
   "--disable-setuid-sandbox",
   "--disable-dev-shm-usage",
   "--disable-gpu",
-  "--single-process",
-  "--no-zygote",
 ];
 
 async function scrapeAccount(companyId, credentials, startDate) {
   let localProxyUrl = null;
   if (USE_PROXY) {
-    const upstreamUrl = `http://${PROXY_USER}:${PROXY_PASS}@${PROXY_HOST}:${PROXY_PORT}`;
-    localProxyUrl = await ProxyChain.anonymizeProxy(upstreamUrl);
-    console.log(`[proxy] Local tunnel: ${localProxyUrl}`);
+    try {
+      const upstreamUrl = `http://${PROXY_USER}:${PROXY_PASS}@${PROXY_HOST}:${PROXY_PORT}`;
+      localProxyUrl = await ProxyChain.anonymizeProxy(upstreamUrl);
+      console.log(`[${companyId}] proxy tunnel: ${localProxyUrl}`);
+    } catch (e) {
+      console.error(`[${companyId}] proxy-chain FAILED: ${e.stack}`);
+      throw e;
+    }
   }
 
-  // Strip http:// prefix — Chromium expects bare host:port for local proxy
   const proxyArg = localProxyUrl ? localProxyUrl.replace(/^https?:\/\//, '') : null;
-  if (proxyArg) console.log(`[${companyId}] --proxy-server=${proxyArg}`);
 
+  // --single-process conflicts with --proxy-server in Chromium
   const launchArgs = [
     ...BASE_LAUNCH_ARGS,
+    ...(proxyArg ? [] : ["--single-process", "--no-zygote"]),
     ...(proxyArg ? [`--proxy-server=${proxyArg}`] : []),
   ];
+  console.log(`[${companyId}] args: ${launchArgs.join(' ')}`);
 
   const puppeteer = STEALTH_COMPANIES.has(companyId) ? puppeteerExtra : puppeteerRegular;
   console.log(`[${companyId}] launching browser, proxy=${proxyArg || 'none'}`);
