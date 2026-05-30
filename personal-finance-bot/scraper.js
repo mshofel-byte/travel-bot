@@ -8,10 +8,10 @@ puppeteerExtra.use(StealthPlugin());
 // Only use stealth for sites that have anti-bot protection
 const STEALTH_COMPANIES = new Set(["leumi", "visaCal", "discount", "mercantile"]);
 
-const PROXY_HOST = process.env.PROXY_HOST;
-const PROXY_PORT = process.env.PROXY_PORT;
-const PROXY_USER = process.env.PROXY_USER;
-const PROXY_PASS = process.env.PROXY_PASS;
+const PROXY_HOST = (process.env.PROXY_HOST || '').trim();
+const PROXY_PORT = (process.env.PROXY_PORT || '').trim();
+const PROXY_USER = (process.env.PROXY_USER || '').trim();
+const PROXY_PASS = (process.env.PROXY_PASS || '').trim();
 const USE_PROXY = !!(PROXY_HOST && PROXY_PORT && PROXY_USER && PROXY_PASS);
 
 if (USE_PROXY) {
