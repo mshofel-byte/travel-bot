@@ -40,6 +40,23 @@ async function applyAntiDetection(page) {
     Object.defineProperty(navigator, 'platform', { get: () => 'Win32' });
     delete navigator.__proto__.webdriver;
     window.chrome = { runtime: {}, loadTimes: () => {}, csi: () => {}, app: {} };
+    // Canvas fingerprint noise to evade Akamai canvas fingerprinting
+    const origToDataURL = HTMLCanvasElement.prototype.toDataURL;
+    HTMLCanvasElement.prototype.toDataURL = function(type) {
+      const ctx = this.getContext('2d');
+      if (ctx) {
+        const imgData = ctx.getImageData(0, 0, this.width || 1, this.height || 1);
+        imgData.data[0] = imgData.data[0] ^ 1;
+        ctx.putImageData(imgData, 0, 0);
+      }
+      return origToDataURL.apply(this, arguments);
+    };
+    const origGetImageData = CanvasRenderingContext2D.prototype.getImageData;
+    CanvasRenderingContext2D.prototype.getImageData = function(x, y, w, h) {
+      const data = origGetImageData.call(this, x, y, w, h);
+      data.data[0] = data.data[0] ^ 1;
+      return data;
+    };
   });
   await page.setUserAgent(STEALTH_UA);
   await page.setExtraHTTPHeaders({ 'Accept-Language': 'he-IL,he;q=0.9,en-US;q=0.8,en;q=0.7' });

@@ -49,6 +49,13 @@ const NEW_LOGIN = `getLoginOptions(credentials) {
           console.log('[discount/mercantile] URL:', pg.url());
           throw e;
         });
+        // Wait for Akamai challenge JS to fully initialize before interacting
+        await new Promise(r => setTimeout(r, 3000));
+        // Simulate human presence with mouse movement before touching the form
+        await pg.mouse.move(300 + Math.floor(Math.random() * 200), 200 + Math.floor(Math.random() * 100));
+        await new Promise(r => setTimeout(r, 300));
+        await pg.mouse.move(400 + Math.floor(Math.random() * 100), 350 + Math.floor(Math.random() * 80));
+        await new Promise(r => setTimeout(r, 200));
         await pg.click('#tzId');
         await pg.type('#tzId', credentials.id, { delay: 80 });
         await pg.click('#tzPassword');

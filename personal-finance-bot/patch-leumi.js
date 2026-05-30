@@ -26,6 +26,8 @@ const NEW_POSSIBLE = `    [_baseScraperWithBrowser.LoginResults.Success]: [({ va
         return !!errorMessage && errorMessage.includes('שגויים');
       },
       ({ value }) => value.includes('/H/Login.html'),
+      ({ value }) => value.includes('/gate-keeper/'),
+      ({ value }) => value.includes('/authenticate'),
     ],`;
 
 let patched = c.replace(OLD_POSSIBLE, NEW_POSSIBLE);
@@ -36,10 +38,18 @@ if (patched === c) {
   console.log('Leumi patch 2 applied: broad success URL matching');
 }
 
-// Fix 3: Replace waitForPostLogin — simply wait 5s then let URL check run.
+// Fix 3: Replace waitForPostLogin — poll until URL settles (max 10s).
 const OLD_POST_LOGIN = /async function waitForPostLogin\(page\) \{[\s\S]*?\n\}/;
 const NEW_POST_LOGIN = `async function waitForPostLogin(page) {
-  await new Promise(r => setTimeout(r, 5000));
+  for (let i = 0; i < 20; i++) {
+    await new Promise(r => setTimeout(r, 500));
+    const url = page.url();
+    if (!url.includes('/H/Login.html') && !url.includes('/gate-keeper/') && !url.includes('/authenticate')) {
+      console.log('[leumi] post-login URL:', url);
+      return;
+    }
+  }
+  console.log('[leumi] post-login URL (still on auth page):', page.url());
 }`;
 
 patched = c.replace(OLD_POST_LOGIN, NEW_POST_LOGIN);
