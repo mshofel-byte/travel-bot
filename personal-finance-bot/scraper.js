@@ -23,13 +23,27 @@ if (USE_PROXY) {
   console.log('[proxy] Disabled (env vars missing)');
 }
 
+const STEALTH_UA = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36';
+
 const BASE_LAUNCH_ARGS = [
   "--no-sandbox",
   "--disable-setuid-sandbox",
   "--disable-dev-shm-usage",
   "--disable-gpu",
   "--window-size=1366,768",
+  "--disable-blink-features=AutomationControlled",
 ];
+
+async function applyAntiDetection(page) {
+  await page.evaluateOnNewDocument(() => {
+    Object.defineProperty(navigator, 'languages', { get: () => ['he-IL', 'he', 'en-US', 'en'] });
+    Object.defineProperty(navigator, 'platform', { get: () => 'Win32' });
+    delete navigator.__proto__.webdriver;
+    window.chrome = { runtime: {}, loadTimes: () => {}, csi: () => {}, app: {} };
+  });
+  await page.setUserAgent(STEALTH_UA);
+  await page.setExtraHTTPHeaders({ 'Accept-Language': 'he-IL,he;q=0.9,en-US;q=0.8,en;q=0.7' });
+}
 
 const REALISTIC_VIEWPORT = { width: 1366, height: 768 };
 
@@ -79,15 +93,32 @@ async function scrapeAccount(companyId, credentials, startDate) {
   if (companyId === 'discount' || companyId === 'mercantile') {
     try {
       const warmupPage = await browser.newPage();
+      await applyAntiDetection(warmupPage);
       await warmupPage.goto('https://start.telebank.co.il/', {
         waitUntil: 'domcontentloaded',
         timeout: 15000,
       }).catch(() => {});
-      await new Promise(r => setTimeout(r, 2500));
+      await new Promise(r => setTimeout(r, 4000));
       await warmupPage.close().catch(() => {});
       console.log(`[${companyId}] warm-up visit complete`);
     } catch (e) {
       console.log(`[${companyId}] warm-up failed (non-fatal): ${e.message}`);
+    }
+  }
+
+  if (companyId === 'leumi') {
+    try {
+      const warmupPage = await browser.newPage();
+      await applyAntiDetection(warmupPage);
+      await warmupPage.goto('https://www.leumi.co.il/', {
+        waitUntil: 'domcontentloaded',
+        timeout: 15000,
+      }).catch(() => {});
+      await new Promise(r => setTimeout(r, 3000));
+      await warmupPage.close().catch(() => {});
+      console.log(`[leumi] warm-up visit complete`);
+    } catch (e) {
+      console.log(`[leumi] warm-up failed (non-fatal): ${e.message}`);
     }
   }
 
@@ -101,6 +132,9 @@ async function scrapeAccount(companyId, credentials, startDate) {
       timeout: 90000,
       defaultTimeout: 90000,
       preparePage: async (page) => {
+        if (STEALTH_COMPANIES.has(companyId)) {
+          await applyAntiDetection(page);
+        }
         page.on('framenavigated', (frame) => {
           if (frame === page.mainFrame()) {
             console.log(`[${companyId}] → ${frame.url()}`);
