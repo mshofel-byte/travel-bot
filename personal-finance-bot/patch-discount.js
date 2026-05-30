@@ -26,23 +26,26 @@ const NEW_LOGIN = `getLoginOptions(credentials) {
     return {
       loginUrl: \`\${BASE_URL}/login/#/LOGIN_PAGE\`,
       fields: [],
-      submitButtonSelector: null,
+      submitButtonSelector: 'button[type="submit"], .sendBtn',
       checkReadiness: async () => {
         const pg = _self.page;
         await pg.waitForSelector('#tzId', { timeout: 60000 });
-        // Triple-click to select all existing text, then type to replace
-        await pg.click('#tzId', { clickCount: 3 });
-        await pg.type('#tzId', credentials.id, { delay: 60 });
-        await new Promise(r => setTimeout(r, 300));
-        await pg.click('#tzPassword', { clickCount: 3 });
-        await pg.type('#tzPassword', credentials.password, { delay: 60 });
-        await new Promise(r => setTimeout(r, 300));
-        await pg.click('#aidnum', { clickCount: 3 });
-        await pg.type('#aidnum', credentials.num, { delay: 60 });
-        // Wait for React to process inputs and enable submit
-        await new Promise(r => setTimeout(r, 1500));
-        // Submit by pressing Enter
-        await pg.keyboard.press('Enter');
+        // Fill via native setter to properly trigger React state
+        await pg.evaluate((id, pass, num) => {
+          function fill(selector, value) {
+            const el = document.querySelector(selector);
+            if (!el) return;
+            const nativeSetter = Object.getOwnPropertyDescriptor(window.HTMLInputElement.prototype, 'value').set;
+            nativeSetter.call(el, value);
+            el.dispatchEvent(new Event('input', { bubbles: true }));
+            el.dispatchEvent(new Event('change', { bubbles: true }));
+          }
+          fill('#tzId', id);
+          fill('#tzPassword', pass);
+          fill('#aidnum', num);
+        }, credentials.id, credentials.password, credentials.num);
+        // Wait for React to enable the submit button
+        await new Promise(r => setTimeout(r, 2000));
       },
       postAction: async () => navigateOrErrorLabel(_self.page),
       possibleResults: getPossibleLoginResults()
