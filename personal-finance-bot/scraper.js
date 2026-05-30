@@ -28,7 +28,10 @@ const BASE_LAUNCH_ARGS = [
   "--disable-setuid-sandbox",
   "--disable-dev-shm-usage",
   "--disable-gpu",
+  "--window-size=1366,768",
 ];
+
+const REALISTIC_VIEWPORT = { width: 1366, height: 768 };
 
 async function scrapeAccount(companyId, credentials, startDate) {
   let localProxyUrl = null;
@@ -60,10 +63,12 @@ async function scrapeAccount(companyId, credentials, startDate) {
 
   const puppeteer = STEALTH_COMPANIES.has(companyId) ? puppeteerExtra : puppeteerRegular;
   console.log(`[${companyId}] launching browser, proxy=${proxyArg || 'none'}`);
+  const useNewHeadless = STEALTH_COMPANIES.has(companyId);
   const browser = await puppeteer.launch({
     args: launchArgs,
-    headless: true,
-    timeout: 60000,
+    headless: useNewHeadless ? 'new' : true,
+    defaultViewport: REALISTIC_VIEWPORT,
+    timeout: 90000,
   });
   console.log(`[${companyId}] browser ws: ${browser.wsEndpoint()}`);
 
@@ -78,7 +83,7 @@ async function scrapeAccount(companyId, credentials, startDate) {
         waitUntil: 'domcontentloaded',
         timeout: 15000,
       }).catch(() => {});
-      await new Promise(r => setTimeout(r, 1500));
+      await new Promise(r => setTimeout(r, 2500));
       await warmupPage.close().catch(() => {});
       console.log(`[${companyId}] warm-up visit complete`);
     } catch (e) {
