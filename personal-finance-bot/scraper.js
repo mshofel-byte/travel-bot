@@ -2,6 +2,7 @@ const { createScraper } = require("israeli-bank-scrapers");
 const puppeteerRegular = require("puppeteer");
 const puppeteerExtra = require("puppeteer-extra");
 const StealthPlugin = require("puppeteer-extra-plugin-stealth");
+const ProxyChain = require("proxy-chain");
 puppeteerExtra.use(StealthPlugin());
 
 // Only use stealth for sites that have anti-bot protection
@@ -19,20 +20,31 @@ if (USE_PROXY) {
   console.log('[proxy] Disabled (env vars missing)');
 }
 
-const LAUNCH_ARGS = [
+const BASE_LAUNCH_ARGS = [
   "--no-sandbox",
   "--disable-setuid-sandbox",
   "--disable-dev-shm-usage",
   "--disable-gpu",
   "--single-process",
   "--no-zygote",
-  ...(USE_PROXY ? [`--proxy-server=http://${PROXY_HOST}:${PROXY_PORT}`] : []),
 ];
 
 async function scrapeAccount(companyId, credentials, startDate) {
+  let localProxyUrl = null;
+  if (USE_PROXY) {
+    const upstreamUrl = `http://${PROXY_USER}:${PROXY_PASS}@${PROXY_HOST}:${PROXY_PORT}`;
+    localProxyUrl = await ProxyChain.anonymizeProxy(upstreamUrl);
+    console.log(`[proxy] Local tunnel: ${localProxyUrl}`);
+  }
+
+  const launchArgs = [
+    ...BASE_LAUNCH_ARGS,
+    ...(localProxyUrl ? [`--proxy-server=${localProxyUrl}`] : []),
+  ];
+
   const puppeteer = STEALTH_COMPANIES.has(companyId) ? puppeteerExtra : puppeteerRegular;
   const browser = await puppeteer.launch({
-    args: LAUNCH_ARGS,
+    args: launchArgs,
     headless: true,
     timeout: 60000,
   });
@@ -47,9 +59,6 @@ async function scrapeAccount(companyId, credentials, startDate) {
       timeout: 60000,
       defaultTimeout: 60000,
       preparePage: async (page) => {
-        if (USE_PROXY) {
-          await page.authenticate({ username: PROXY_USER, password: PROXY_PASS });
-        }
         page.on('framenavigated', (frame) => {
           if (frame === page.mainFrame()) {
             console.log(`[${companyId}] → ${frame.url()}`);
@@ -76,6 +85,9 @@ async function scrapeAccount(companyId, credentials, startDate) {
     return result.accounts || [];
   } finally {
     await browser.close().catch(() => {});
+    if (localProxyUrl) {
+      await ProxyChain.closeAnonymizedProxy(localProxyUrl, true).catch(() => {});
+    }
   }
 }
 
