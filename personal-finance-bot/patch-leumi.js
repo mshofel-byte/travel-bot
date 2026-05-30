@@ -8,9 +8,7 @@ c = c.replace(
   "const LOGIN_URL = 'https://hb2.bankleumi.co.il/H/Login.html';"
 );
 
-// Fix 2: Broaden Success condition + log actual URL.
-// The gate-keeper/he/ page IS the login form — after successful login
-// we end up somewhere on hb2.bankleumi.co.il that is not login/gate-keeper.
+// Fix 2: Broaden Success condition + map login page to InvalidPassword.
 const OLD_POSSIBLE = `    [_baseScraperWithBrowser.LoginResults.Success]: [/ebanking\\/SO\\/SPA.aspx/i],`;
 const NEW_POSSIBLE = `    [_baseScraperWithBrowser.LoginResults.Success]: [({ value }) => {
       console.log('[leumi] post-login URL:', value);
@@ -18,7 +16,17 @@ const NEW_POSSIBLE = `    [_baseScraperWithBrowser.LoginResults.Success]: [({ va
              !value.includes('/H/Login.html') &&
              !value.includes('/gate-keeper/') &&
              !value.includes('/authenticate');
-    }],`;
+    }],
+    [_baseScraperWithBrowser.LoginResults.InvalidPassword]: [
+      async options => {
+        if (!options || !options.page) throw new Error('missing page options argument');
+        const errorMessage = await (0, _elementsInteractions.pageEvalAll)(options.page, 'svg#Capa_1', '', element => {
+          return element[0]?.parentElement?.children[1]?.innerText;
+        });
+        return !!errorMessage && errorMessage.includes('שגויים');
+      },
+      ({ value }) => value.includes('/H/Login.html'),
+    ],`;
 
 let patched = c.replace(OLD_POSSIBLE, NEW_POSSIBLE);
 if (patched === c) {
