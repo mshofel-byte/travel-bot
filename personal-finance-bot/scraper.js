@@ -20,7 +20,7 @@ const LAUNCH_ARGS = [
   "--disable-gpu",
   "--single-process",
   "--no-zygote",
-  ...(USE_PROXY ? [`--proxy-server=https://${PROXY_HOST}:${PROXY_PORT}`] : []),
+  ...(USE_PROXY ? [`--proxy-server=http://${PROXY_HOST}:${PROXY_PORT}`] : []),
 ];
 
 async function scrapeAccount(companyId, credentials, startDate) {
