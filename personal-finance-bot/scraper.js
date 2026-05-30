@@ -67,6 +67,24 @@ async function scrapeAccount(companyId, credentials, startDate) {
   });
   console.log(`[${companyId}] browser ws: ${browser.wsEndpoint()}`);
 
+  // Warm-up visit for banks with aggressive bot detection.
+  // Opening the main page lets the anti-fraud JavaScript (Akamai/Imperva)
+  // run and set its cookies before we navigate to the login form.
+  if (companyId === 'discount' || companyId === 'mercantile') {
+    try {
+      const warmupPage = await browser.newPage();
+      await warmupPage.goto('https://start.telebank.co.il/', {
+        waitUntil: 'networkidle2',
+        timeout: 30000,
+      }).catch(() => {});
+      await new Promise(r => setTimeout(r, 3000));
+      await warmupPage.close().catch(() => {});
+      console.log(`[${companyId}] warm-up visit complete`);
+    } catch (e) {
+      console.log(`[${companyId}] warm-up failed (non-fatal): ${e.message}`);
+    }
+  }
+
   try {
     const scraper = createScraper({
       companyId,
