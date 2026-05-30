@@ -70,14 +70,16 @@ const NEW_LOGIN_OPTIONS = `getLoginOptions(credentials) {
     return {
       loginUrl: LOGIN_URL,
       fields: [],
-      submitButtonSelector: "button[type='submit']",
+      submitButtonSelector: async () => {},
       checkReadiness: async () => {
         const pg = _self.page;
+        console.log('[leumi] checkReadiness start, url:', pg.url());
         // Wait for inputs to appear (works on gate-keeper page which IS the login form)
         await pg.waitForFunction(
           () => document.querySelectorAll('input:not([type="hidden"])').length > 0,
           { timeout: 60000 }
         );
+        console.log('[leumi] inputs found, filling username');
         // Fill username via native setter (bypasses React synthetic event system)
         await pg.evaluate((val) => {
           const inputs = [...document.querySelectorAll('input:not([type="hidden"])')];
@@ -93,6 +95,7 @@ const NEW_LOGIN_OPTIONS = `getLoginOptions(credentials) {
           () => document.querySelectorAll('input:not([type="hidden"])').length >= 2,
           { timeout: 30000 }
         );
+        console.log('[leumi] filling password');
         // Fill password via native setter
         await pg.evaluate((val) => {
           const inputs = [...document.querySelectorAll('input:not([type="hidden"])')];
@@ -102,6 +105,15 @@ const NEW_LOGIN_OPTIONS = `getLoginOptions(credentials) {
           el.dispatchEvent(new Event('input', { bubbles: true }));
           el.dispatchEvent(new Event('change', { bubbles: true }));
         }, credentials.password);
+        await new Promise(r => setTimeout(r, 500));
+        // Submit form — click button or press Enter
+        const clicked = await pg.evaluate(() => {
+          const btn = document.querySelector("button[type='submit']");
+          if (btn) { btn.click(); return true; }
+          return false;
+        });
+        console.log('[leumi] submitted via', clicked ? 'button click' : 'Enter key');
+        if (!clicked) await pg.keyboard.press('Enter');
       },
       postAction: async () => waitForPostLogin(_self.page),
       possibleResults: getPossibleLoginResults()

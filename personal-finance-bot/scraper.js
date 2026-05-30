@@ -123,21 +123,6 @@ async function scrapeAccount(companyId, credentials, startDate) {
     }
   }
 
-  if (companyId === 'leumi') {
-    try {
-      const warmupPage = await browser.newPage();
-      await applyAntiDetection(warmupPage);
-      await warmupPage.goto('https://www.leumi.co.il/', {
-        waitUntil: 'domcontentloaded',
-        timeout: 15000,
-      }).catch(() => {});
-      await new Promise(r => setTimeout(r, 3000));
-      await warmupPage.close().catch(() => {});
-      console.log(`[leumi] warm-up visit complete`);
-    } catch (e) {
-      console.log(`[leumi] warm-up failed (non-fatal): ${e.message}`);
-    }
-  }
 
   try {
     const scraper = createScraper({
