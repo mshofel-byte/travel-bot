@@ -37,9 +37,13 @@ async function scrapeAccount(companyId, credentials, startDate) {
     console.log(`[proxy] Local tunnel: ${localProxyUrl}`);
   }
 
+  // Strip http:// prefix — Chromium expects bare host:port for local proxy
+  const proxyArg = localProxyUrl ? localProxyUrl.replace(/^https?:\/\//, '') : null;
+  if (proxyArg) console.log(`[${companyId}] --proxy-server=${proxyArg}`);
+
   const launchArgs = [
     ...BASE_LAUNCH_ARGS,
-    ...(localProxyUrl ? [`--proxy-server=${localProxyUrl}`] : []),
+    ...(proxyArg ? [`--proxy-server=${proxyArg}`] : []),
   ];
 
   const puppeteer = STEALTH_COMPANIES.has(companyId) ? puppeteerExtra : puppeteerRegular;
