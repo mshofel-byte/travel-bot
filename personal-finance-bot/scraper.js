@@ -13,6 +13,12 @@ const PROXY_USER = process.env.PROXY_USER;
 const PROXY_PASS = process.env.PROXY_PASS;
 const USE_PROXY = !!(PROXY_HOST && PROXY_PORT && PROXY_USER && PROXY_PASS);
 
+if (USE_PROXY) {
+  console.log(`[proxy] Enabled: ${PROXY_HOST}:${PROXY_PORT} user=${PROXY_USER}`);
+} else {
+  console.log('[proxy] Disabled (env vars missing)');
+}
+
 const LAUNCH_ARGS = [
   "--no-sandbox",
   "--disable-setuid-sandbox",
