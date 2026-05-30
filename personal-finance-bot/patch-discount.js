@@ -29,7 +29,16 @@ const NEW_LOGIN = `getLoginOptions(credentials) {
       submitButtonSelector: async () => {},
       checkReadiness: async () => {
         const pg = _self.page;
-        await pg.waitForSelector('#tzId', { timeout: 60000 });
+        await pg.waitForSelector('#tzId', { timeout: 60000 }).catch(async (e) => {
+          const inputs = await pg.evaluate(() =>
+            [...document.querySelectorAll('input')].map(el => ({
+              id: el.id, name: el.name, type: el.type, placeholder: el.placeholder
+            }))
+          );
+          console.log('[discount/mercantile] inputs on page:', JSON.stringify(inputs));
+          console.log('[discount/mercantile] URL:', pg.url());
+          throw e;
+        });
         // Ctrl+A selects existing text, type() replaces it with real keyboard events
         // that React's synthetic event system recognizes
         async function fillField(selector, value) {
