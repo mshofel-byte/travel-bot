@@ -26,26 +26,29 @@ const NEW_LOGIN = `getLoginOptions(credentials) {
     return {
       loginUrl: \`\${BASE_URL}/login/#/LOGIN_PAGE\`,
       fields: [],
-      submitButtonSelector: 'button[type="submit"], .sendBtn',
+      submitButtonSelector: async () => {},
       checkReadiness: async () => {
         const pg = _self.page;
         await pg.waitForSelector('#tzId', { timeout: 60000 });
-        // Fill via native setter to properly trigger React state
-        await pg.evaluate((id, pass, num) => {
-          function fill(selector, value) {
-            const el = document.querySelector(selector);
-            if (!el) return;
-            const nativeSetter = Object.getOwnPropertyDescriptor(window.HTMLInputElement.prototype, 'value').set;
-            nativeSetter.call(el, value);
-            el.dispatchEvent(new Event('input', { bubbles: true }));
-            el.dispatchEvent(new Event('change', { bubbles: true }));
-          }
-          fill('#tzId', id);
-          fill('#tzPassword', pass);
-          fill('#aidnum', num);
-        }, credentials.id, credentials.password, credentials.num);
-        // Wait for React to enable the submit button
-        await new Promise(r => setTimeout(r, 2000));
+        // Ctrl+A selects existing text, type() replaces it with real keyboard events
+        // that React's synthetic event system recognizes
+        async function fillField(selector, value) {
+          await pg.click(selector);
+          await pg.keyboard.down('Control');
+          await pg.keyboard.press('KeyA');
+          await pg.keyboard.up('Control');
+          await pg.type(selector, value, { delay: 80 });
+          await new Promise(r => setTimeout(r, 200));
+        }
+        await fillField('#tzId', credentials.id);
+        await fillField('#tzPassword', credentials.password);
+        await fillField('#aidnum', credentials.num);
+        // Blur last field and wait for React to enable submit
+        await pg.keyboard.press('Tab');
+        await new Promise(r => setTimeout(r, 1500));
+        // Submit
+        await pg.keyboard.press('Enter');
+        console.log('[discount] form submitted');
       },
       postAction: async () => navigateOrErrorLabel(_self.page),
       possibleResults: getPossibleLoginResults()
