@@ -8,6 +8,9 @@ puppeteerExtra.use(StealthPlugin());
 // Only use stealth for sites that have anti-bot protection
 const STEALTH_COMPANIES = new Set(["leumi", "visaCal", "discount", "mercantile"]);
 
+// Only route through residential proxy for banks that block datacenter IPs
+const PROXY_COMPANIES = new Set(["leumi", "discount", "mercantile", "visaCal"]);
+
 const PROXY_HOST = (process.env.PROXY_HOST || '').trim();
 const PROXY_PORT = (process.env.PROXY_PORT || '').trim();
 const PROXY_USER = (process.env.PROXY_USER || '').trim();
@@ -29,7 +32,7 @@ const BASE_LAUNCH_ARGS = [
 
 async function scrapeAccount(companyId, credentials, startDate) {
   let localProxyUrl = null;
-  if (USE_PROXY) {
+  if (USE_PROXY && PROXY_COMPANIES.has(companyId)) {
     try {
       console.log(`[proxy-debug] host="${PROXY_HOST}" len=${PROXY_HOST.length}`);
       console.log(`[proxy-debug] port="${PROXY_PORT}" len=${PROXY_PORT.length}`);
