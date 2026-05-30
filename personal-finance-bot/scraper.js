@@ -47,11 +47,13 @@ async function scrapeAccount(companyId, credentials, startDate) {
   ];
 
   const puppeteer = STEALTH_COMPANIES.has(companyId) ? puppeteerExtra : puppeteerRegular;
+  console.log(`[${companyId}] launching browser, proxy=${proxyArg || 'none'}`);
   const browser = await puppeteer.launch({
     args: launchArgs,
     headless: true,
     timeout: 60000,
   });
+  console.log(`[${companyId}] browser ws: ${browser.wsEndpoint()}`);
 
   try {
     const scraper = createScraper({
