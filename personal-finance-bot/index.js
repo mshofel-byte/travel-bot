@@ -511,6 +511,42 @@ app.post("/webhook", async (req, res) => {
       return;
     }
 
+    if (text === "הסר חשבון" || text === "/removebank") {
+      const res3 = await pool.query(
+        "SELECT company_id, company_name FROM bank_credentials WHERE household_id=$1 ORDER BY company_name",
+        [user.household_id]
+      );
+      if (res3.rows.length === 0) {
+        await send(from, "אין חשבונות בנק רשומים.");
+        return;
+      }
+      const list = res3.rows.map((r, i) => `${i + 1}. ${r.company_name}`).join("\n");
+      user.state = "removing_bank_select";
+      user.state_data = { banks: res3.rows };
+      await saveUser(from, user);
+      await send(from, `איזה חשבון להסיר?\n\n${list}\n\nשלח מספר:`);
+      return;
+    }
+
+    if (user.state === "removing_bank_select") {
+      const { banks } = sd;
+      const idx = parseInt(text) - 1;
+      if (isNaN(idx) || idx < 0 || idx >= banks.length) {
+        await send(from, "מספר לא תקין. נסה שוב.");
+        return;
+      }
+      const bank = banks[idx];
+      await pool.query(
+        "DELETE FROM bank_credentials WHERE household_id=$1 AND company_id=$2",
+        [user.household_id, bank.company_id]
+      );
+      user.state = "active";
+      user.state_data = {};
+      await saveUser(from, user);
+      await send(from, `✅ החשבון *${bank.company_name}* הוסר.`);
+      return;
+    }
+
     if (text === "/invite") {
       const res2 = await pool.query("SELECT invite_code FROM households WHERE id=$1", [user.household_id]);
       await send(from, `קוד הזמנה: *${res2.rows[0]?.invite_code}*\n\nשלח אותו לבן/בת הזוג.`);
