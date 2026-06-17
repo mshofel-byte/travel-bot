@@ -1,0 +1,2518 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>צ׳כיה ישראל — הזדמנות השקעה | מלאדה בולסלב</title>
+<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --navy: #0A1628;
+  --navy2: #0D1E35;
+  --navy3: #112244;
+  --gold: #C9A84C;
+  --gold2: #E2C06B;
+  --gold3: #F0D98A;
+  --white: #FFFFFF;
+  --light: #E8EDF5;
+  --muted: #8A9BB5;
+  --accent: #1A3A6E;
+}
+
+html, body {
+  width: 100%; height: 100%;
+  overflow: hidden;
+  font-family: 'Heebo', sans-serif;
+  background: var(--navy);
+  color: var(--white);
+  direction: rtl;
+}
+
+.presentation {
+  width: 100vw;
+  height: 100vh;
+  position: relative;
+  overflow: hidden;
+}
+
+.slide {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.6s ease, transform 0.6s ease;
+  transform: translateX(-40px);
+  overflow: hidden;
+}
+
+.slide.active {
+  opacity: 1;
+  pointer-events: all;
+  transform: translateX(0);
+}
+
+.slide.prev {
+  opacity: 0;
+  transform: translateX(40px);
+}
+
+/* Watermark logo */
+.slide::after {
+  content: '';
+  position: absolute;
+  bottom: 24px;
+  left: 32px;
+  width: 48px;
+  height: 48px;
+  background: url('images/logo.jpeg') center/contain no-repeat;
+  opacity: 0.25;
+  pointer-events: none;
+  z-index: 10;
+}
+
+/* Navigation */
+.nav {
+  position: fixed;
+  bottom: 28px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  z-index: 100;
+  background: rgba(10,22,40,0.85);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(201,168,76,0.25);
+  border-radius: 50px;
+  padding: 10px 20px;
+}
+
+.nav-btn {
+  background: none;
+  border: none;
+  color: var(--gold);
+  cursor: pointer;
+  font-size: 20px;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: background 0.2s;
+}
+.nav-btn:hover { background: rgba(201,168,76,0.15); }
+
+.nav-dots {
+  display: flex;
+  gap: 6px;
+  flex-direction: row-reverse;
+}
+
+.dot {
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: var(--muted);
+  cursor: pointer;
+  transition: all 0.3s;
+}
+.dot.active { background: var(--gold); transform: scale(1.4); }
+
+.slide-counter {
+  font-size: 12px;
+  color: var(--muted);
+  font-weight: 300;
+  min-width: 40px;
+  text-align: center;
+}
+
+/* Gold line divider */
+.gold-line {
+  width: 64px;
+  height: 3px;
+  background: linear-gradient(90deg, var(--gold), var(--gold2));
+  border-radius: 2px;
+  margin: 12px 0;
+}
+
+.gold-line.center { margin: 12px auto; }
+
+/* Slide title style */
+.slide-label {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 3px;
+  color: var(--gold);
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+
+.slide-title {
+  font-size: clamp(28px, 4vw, 52px);
+  font-weight: 800;
+  line-height: 1.15;
+  color: var(--white);
+}
+
+.slide-subtitle {
+  font-size: clamp(14px, 1.6vw, 18px);
+  font-weight: 300;
+  color: var(--light);
+  line-height: 1.6;
+}
+
+/* Background patterns */
+.bg-pattern {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 80% 60% at 20% 50%, rgba(26,58,110,0.4) 0%, transparent 60%),
+    radial-gradient(ellipse 50% 80% at 80% 20%, rgba(201,168,76,0.06) 0%, transparent 50%);
+  pointer-events: none;
+}
+
+.bg-grid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(201,168,76,0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(201,168,76,0.04) 1px, transparent 1px);
+  background-size: 60px 60px;
+  pointer-events: none;
+}
+
+/* ─────────────────────────────────────────
+   SLIDE 1 — COVER
+───────────────────────────────────────── */
+#slide-1 {
+  background: linear-gradient(135deg, #060E1C 0%, #0A1628 50%, #0D1E35 100%);
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+#slide-1 .cover-bg {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 70% 70% at 50% 50%, rgba(201,168,76,0.07) 0%, transparent 60%),
+    radial-gradient(ellipse 40% 40% at 15% 85%, rgba(26,58,110,0.5) 0%, transparent 50%),
+    radial-gradient(ellipse 30% 50% at 85% 15%, rgba(201,168,76,0.05) 0%, transparent 40%);
+}
+
+#slide-1 .cover-img {
+  position: absolute;
+  inset: 0;
+  background: url('images/emil-kolben-1.jpeg') center/cover no-repeat;
+  opacity: 0.12;
+  filter: saturate(0.3);
+}
+
+#slide-1 .cover-content {
+  position: relative;
+  z-index: 2;
+  max-width: 780px;
+  padding: 40px;
+}
+
+#slide-1 .logo-wrap {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 32px;
+}
+
+#slide-1 .logo-wrap img {
+  width: 80px;
+  height: 80px;
+  object-fit: contain;
+  border-radius: 12px;
+  box-shadow: 0 0 40px rgba(201,168,76,0.3);
+}
+
+#slide-1 .company-name {
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 5px;
+  color: var(--gold);
+  text-transform: uppercase;
+  margin-bottom: 20px;
+}
+
+#slide-1 .cover-headline {
+  font-size: clamp(36px, 6vw, 72px);
+  font-weight: 900;
+  line-height: 1.1;
+  margin-bottom: 8px;
+  background: linear-gradient(135deg, #FFFFFF 0%, #E2C06B 60%, #C9A84C 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+#slide-1 .cover-sub {
+  font-size: clamp(16px, 2vw, 22px);
+  font-weight: 300;
+  color: var(--light);
+  margin-bottom: 36px;
+  line-height: 1.5;
+}
+
+#slide-1 .cover-tags {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-bottom: 40px;
+}
+
+#slide-1 .tag {
+  border: 1px solid rgba(201,168,76,0.4);
+  border-radius: 50px;
+  padding: 8px 22px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--gold2);
+  background: rgba(201,168,76,0.06);
+  letter-spacing: 0.5px;
+}
+
+#slide-1 .cover-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1px;
+  background: rgba(201,168,76,0.15);
+  border-radius: 16px;
+  overflow: hidden;
+  border: 1px solid rgba(201,168,76,0.2);
+}
+
+#slide-1 .stat-item {
+  background: rgba(10,22,40,0.8);
+  padding: 20px 16px;
+  text-align: center;
+}
+
+#slide-1 .stat-num {
+  font-size: 32px;
+  font-weight: 800;
+  color: var(--gold);
+  line-height: 1;
+  margin-bottom: 4px;
+}
+
+#slide-1 .stat-label {
+  font-size: 12px;
+  color: var(--muted);
+  font-weight: 400;
+}
+
+#slide-1 .confidential {
+  position: absolute;
+  top: 24px;
+  left: 32px;
+  font-size: 10px;
+  letter-spacing: 2px;
+  color: var(--muted);
+  text-transform: uppercase;
+}
+
+/* ─────────────────────────────────────────
+   SLIDE 2 — EXECUTIVE SUMMARY
+───────────────────────────────────────── */
+#slide-2 {
+  background: var(--navy);
+  padding: 60px 80px;
+}
+
+#slide-2 .exec-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 32px;
+  margin-top: 32px;
+  flex: 1;
+}
+
+.exec-card {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(201,168,76,0.15);
+  border-radius: 16px;
+  padding: 28px;
+  position: relative;
+  overflow: hidden;
+}
+
+.exec-card::before {
+  content: '';
+  position: absolute;
+  top: 0; right: 0;
+  width: 3px;
+  height: 100%;
+  background: linear-gradient(180deg, var(--gold), transparent);
+}
+
+.exec-card-icon {
+  font-size: 28px;
+  margin-bottom: 12px;
+}
+
+.exec-card-title {
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  color: var(--gold);
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+
+.exec-card-content {
+  font-size: 14px;
+  color: var(--light);
+  line-height: 1.7;
+}
+
+.exec-card-content strong {
+  color: var(--white);
+  font-weight: 700;
+}
+
+.highlight-box {
+  background: linear-gradient(135deg, rgba(201,168,76,0.12), rgba(201,168,76,0.04));
+  border: 1px solid rgba(201,168,76,0.3);
+  border-radius: 16px;
+  padding: 28px 32px;
+  margin-top: 28px;
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+.highlight-num {
+  font-size: 48px;
+  font-weight: 900;
+  color: var(--gold);
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.highlight-text {
+  font-size: 16px;
+  color: var(--light);
+  line-height: 1.6;
+}
+
+/* ─────────────────────────────────────────
+   SLIDE 3 — ABOUT THE COMPANY
+───────────────────────────────────────── */
+#slide-3 {
+  background: linear-gradient(160deg, #060E1C 0%, var(--navy) 100%);
+  padding: 60px 80px;
+  overflow: hidden;
+}
+
+.about-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 60px;
+  margin-top: 32px;
+  flex: 1;
+  align-items: start;
+}
+
+.about-text p {
+  font-size: 15px;
+  color: var(--light);
+  line-height: 1.8;
+  margin-bottom: 16px;
+}
+
+.milestone-list {
+  list-style: none;
+  margin-top: 8px;
+}
+
+.milestone-list li {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  padding: 10px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+  font-size: 14px;
+  color: var(--light);
+  line-height: 1.5;
+}
+
+.milestone-list li .year {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--gold);
+  min-width: 38px;
+  letter-spacing: 1px;
+}
+
+.about-stats-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.kpi-card {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(201,168,76,0.2);
+  border-radius: 14px;
+  padding: 20px 18px;
+  text-align: center;
+}
+
+.kpi-num {
+  font-size: 36px;
+  font-weight: 800;
+  color: var(--gold);
+  line-height: 1;
+  margin-bottom: 6px;
+}
+
+.kpi-label {
+  font-size: 12px;
+  color: var(--muted);
+  font-weight: 400;
+  line-height: 1.4;
+}
+
+/* ─────────────────────────────────────────
+   SLIDE 4 — TEAM
+───────────────────────────────────────── */
+#slide-4 {
+  background: var(--navy2);
+  padding: 50px 80px;
+  overflow-y: auto;
+}
+
+.team-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 28px;
+  margin-top: 32px;
+}
+
+.team-card {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(201,168,76,0.15);
+  border-radius: 20px;
+  overflow: hidden;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.team-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 60px rgba(201,168,76,0.1);
+}
+
+.team-photo-wrap {
+  position: relative;
+  height: 260px;
+  overflow: hidden;
+}
+
+.team-photo-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+  filter: saturate(0.85) contrast(1.05);
+  transition: transform 0.4s;
+}
+
+.team-card:hover .team-photo-wrap img {
+  transform: scale(1.03);
+}
+
+.team-photo-overlay {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 80px;
+  background: linear-gradient(transparent, rgba(10,22,40,0.9));
+}
+
+/* Roni photo treatment */
+#roni-photo {
+  filter: saturate(0.6) contrast(1.1) brightness(1.05) grayscale(0.3);
+}
+
+.team-info {
+  padding: 20px 22px 24px;
+}
+
+.team-name {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--white);
+  margin-bottom: 4px;
+}
+
+.team-role {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--gold);
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  margin-bottom: 12px;
+}
+
+.team-desc {
+  font-size: 13px;
+  color: var(--muted);
+  line-height: 1.65;
+}
+
+.partner-badge {
+  background: linear-gradient(135deg, var(--gold), var(--gold2));
+  border-radius: 50px;
+  padding: 3px 12px;
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--navy);
+  display: inline-block;
+  margin-bottom: 8px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.team-footer {
+  margin-top: 28px;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(201,168,76,0.12);
+  border-radius: 14px;
+  padding: 18px 24px;
+  font-size: 14px;
+  color: var(--muted);
+  text-align: center;
+  line-height: 1.6;
+}
+
+/* ─────────────────────────────────────────
+   SLIDE 5 — TRACK RECORD OVERVIEW
+───────────────────────────────────────── */
+#slide-5 {
+  background: var(--navy);
+  padding: 50px 80px;
+  overflow-y: auto;
+}
+
+.track-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 28px;
+}
+
+.track-table th {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  color: var(--gold);
+  text-transform: uppercase;
+  padding: 12px 16px;
+  text-align: right;
+  border-bottom: 1px solid rgba(201,168,76,0.3);
+}
+
+.track-table td {
+  padding: 14px 16px;
+  font-size: 14px;
+  color: var(--light);
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+  vertical-align: middle;
+}
+
+.track-table tr:hover td {
+  background: rgba(201,168,76,0.04);
+}
+
+.status-badge {
+  display: inline-block;
+  border-radius: 50px;
+  padding: 4px 14px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+.status-done { background: rgba(34,197,94,0.15); color: #4ade80; border: 1px solid rgba(34,197,94,0.3); }
+.status-active { background: rgba(201,168,76,0.15); color: var(--gold2); border: 1px solid rgba(201,168,76,0.3); }
+.status-pipeline { background: rgba(99,102,241,0.15); color: #a5b4fc; border: 1px solid rgba(99,102,241,0.3); }
+
+.track-summary {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin-top: 24px;
+}
+
+.ts-item {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(201,168,76,0.15);
+  border-radius: 12px;
+  padding: 16px 20px;
+  text-align: center;
+}
+
+.ts-num {
+  font-size: 28px;
+  font-weight: 800;
+  color: var(--gold);
+  line-height: 1;
+  margin-bottom: 4px;
+}
+
+.ts-label {
+  font-size: 11px;
+  color: var(--muted);
+}
+
+/* ─────────────────────────────────────────
+   SLIDE 6 — EMIL KOLBEN HIGHLIGHT
+───────────────────────────────────────── */
+#slide-6 {
+  background: #060E1C;
+  overflow: hidden;
+}
+
+#slide-6 .hero-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  height: 100%;
+}
+
+#slide-6 .hero-img-side {
+  position: relative;
+  overflow: hidden;
+}
+
+#slide-6 .hero-img-side img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: saturate(0.8) contrast(1.1);
+}
+
+#slide-6 .hero-img-side::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent 60%, #060E1C 100%);
+}
+
+#slide-6 .hero-content {
+  padding: 60px 50px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+#slide-6 .big-return {
+  font-size: clamp(48px, 6vw, 80px);
+  font-weight: 900;
+  color: var(--gold);
+  line-height: 1;
+  margin-bottom: 4px;
+}
+
+#slide-6 .big-return-sub {
+  font-size: 16px;
+  color: var(--muted);
+  margin-bottom: 32px;
+}
+
+.fact-list {
+  list-style: none;
+  margin-top: 8px;
+}
+
+.fact-list li {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 10px 0;
+  font-size: 14px;
+  color: var(--light);
+  line-height: 1.5;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+
+.fact-list li::before {
+  content: '◆';
+  color: var(--gold);
+  font-size: 8px;
+  margin-top: 5px;
+  flex-shrink: 0;
+}
+
+/* ─────────────────────────────────────────
+   SLIDE 7 — WHY CZECH REPUBLIC
+───────────────────────────────────────── */
+#slide-7 {
+  background: var(--navy);
+  padding: 50px 80px;
+}
+
+.macro-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 28px;
+  margin-top: 28px;
+  flex: 1;
+}
+
+.macro-card {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(201,168,76,0.15);
+  border-radius: 16px;
+  padding: 26px 28px;
+  position: relative;
+  overflow: hidden;
+}
+
+.macro-card-top {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 14px;
+}
+
+.macro-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: rgba(201,168,76,0.12);
+  border: 1px solid rgba(201,168,76,0.25);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  flex-shrink: 0;
+}
+
+.macro-card-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--white);
+}
+
+.macro-card-stat {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--gold);
+  letter-spacing: 1px;
+}
+
+.macro-card-text {
+  font-size: 13px;
+  color: var(--muted);
+  line-height: 1.65;
+}
+
+.macro-card-text strong { color: var(--light); }
+
+/* SVG Chart */
+.chart-wrap {
+  margin-top: 16px;
+  background: rgba(0,0,0,0.2);
+  border-radius: 10px;
+  padding: 12px;
+}
+
+.chart-title {
+  font-size: 11px;
+  color: var(--muted);
+  margin-bottom: 8px;
+  text-align: center;
+  letter-spacing: 1px;
+}
+
+/* ─────────────────────────────────────────
+   SLIDE 8 — WHY MLADA BOLESLAV
+───────────────────────────────────────── */
+#slide-8 {
+  background: linear-gradient(160deg, #060E1C 0%, var(--navy) 100%);
+  padding: 50px 80px;
+}
+
+.city-layout {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: 40px;
+  margin-top: 28px;
+  flex: 1;
+  align-items: start;
+}
+
+.city-facts {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.city-fact {
+  display: flex;
+  gap: 18px;
+  align-items: flex-start;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(201,168,76,0.12);
+  border-radius: 14px;
+  padding: 16px 20px;
+}
+
+.city-fact-icon {
+  font-size: 24px;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.city-fact-title {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--white);
+  margin-bottom: 4px;
+}
+
+.city-fact-text {
+  font-size: 13px;
+  color: var(--muted);
+  line-height: 1.6;
+}
+
+.city-fact-text strong { color: var(--gold2); }
+
+.city-stats-side {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.city-stat-big {
+  background: rgba(201,168,76,0.06);
+  border: 1px solid rgba(201,168,76,0.25);
+  border-radius: 16px;
+  padding: 22px 24px;
+  text-align: center;
+}
+
+.city-stat-big .num {
+  font-size: 42px;
+  font-weight: 900;
+  color: var(--gold);
+  line-height: 1;
+}
+
+.city-stat-big .lbl {
+  font-size: 13px;
+  color: var(--light);
+  margin-top: 6px;
+  line-height: 1.4;
+}
+
+.skanska-box {
+  background: rgba(26,58,110,0.3);
+  border: 1px solid rgba(100,150,255,0.25);
+  border-radius: 14px;
+  padding: 18px 22px;
+}
+
+.skanska-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: #7EB8FF;
+  letter-spacing: 1px;
+  margin-bottom: 8px;
+}
+
+.skanska-text {
+  font-size: 13px;
+  color: var(--muted);
+  line-height: 1.6;
+}
+
+/* ─────────────────────────────────────────
+   SLIDE 9 — THE PROJECT
+───────────────────────────────────────── */
+#slide-9 {
+  background: #060E1C;
+  overflow: hidden;
+}
+
+#slide-9 .project-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  height: 100%;
+}
+
+#slide-9 .project-gallery {
+  position: relative;
+  overflow: hidden;
+}
+
+#slide-9 .project-gallery .main-img {
+  width: 100%;
+  height: 70%;
+  object-fit: cover;
+  filter: saturate(0.85);
+}
+
+#slide-9 .project-gallery .thumb-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  height: 30%;
+}
+
+#slide-9 .project-gallery .thumb-row img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: saturate(0.75);
+  opacity: 0.8;
+}
+
+#slide-9 .project-content {
+  padding: 50px 40px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.project-spec-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.spec-item {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(201,168,76,0.12);
+  border-radius: 10px;
+  padding: 12px 14px;
+}
+
+.spec-label {
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--gold);
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+
+.spec-value {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--white);
+}
+
+/* ─────────────────────────────────────────
+   SLIDE 10 — DEAL STRUCTURE
+───────────────────────────────────────── */
+#slide-10 {
+  background: var(--navy);
+  padding: 50px 80px;
+}
+
+.deal-diagram {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+  margin-top: 24px;
+  position: relative;
+}
+
+.deal-row {
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+  width: 100%;
+}
+
+.deal-box {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(201,168,76,0.2);
+  border-radius: 14px;
+  padding: 16px 24px;
+  text-align: center;
+  min-width: 180px;
+  position: relative;
+}
+
+.deal-box.gold-box {
+  background: rgba(201,168,76,0.1);
+  border-color: rgba(201,168,76,0.5);
+}
+
+.deal-box.center-box {
+  background: rgba(26,58,110,0.4);
+  border: 2px solid var(--gold);
+  min-width: 220px;
+}
+
+.deal-box-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--white);
+  margin-bottom: 4px;
+}
+
+.deal-box-sub {
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.deal-box-pct {
+  font-size: 20px;
+  font-weight: 900;
+  color: var(--gold);
+  margin-top: 4px;
+}
+
+.deal-arrow {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 32px;
+  color: var(--gold);
+  font-size: 18px;
+}
+
+.deal-phases {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin-top: 20px;
+  width: 100%;
+}
+
+.phase-card {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(201,168,76,0.12);
+  border-radius: 12px;
+  padding: 16px 18px;
+  text-align: center;
+}
+
+.phase-num {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--gold);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+
+.phase-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--white);
+  margin-bottom: 4px;
+}
+
+.phase-text {
+  font-size: 12px;
+  color: var(--muted);
+  line-height: 1.5;
+}
+
+/* ─────────────────────────────────────────
+   SLIDE 11 — FINANCIAL RETURNS
+───────────────────────────────────────── */
+#slide-11 {
+  background: linear-gradient(135deg, #060E1C 0%, var(--navy) 100%);
+  padding: 50px 80px;
+}
+
+.returns-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 32px;
+  margin-top: 28px;
+  flex: 1;
+  align-items: start;
+}
+
+.return-hero {
+  background: linear-gradient(135deg, rgba(201,168,76,0.12), rgba(201,168,76,0.03));
+  border: 2px solid rgba(201,168,76,0.4);
+  border-radius: 20px;
+  padding: 36px;
+  text-align: center;
+}
+
+.return-moic {
+  font-size: 72px;
+  font-weight: 900;
+  color: var(--gold);
+  line-height: 1;
+  background: linear-gradient(135deg, var(--gold2), var(--gold));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.return-moic-label {
+  font-size: 13px;
+  color: var(--muted);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: 24px;
+}
+
+.return-irr {
+  font-size: 40px;
+  font-weight: 800;
+  color: var(--white);
+}
+
+.return-irr-label {
+  font-size: 12px;
+  color: var(--muted);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+.return-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.return-table tr:not(:last-child) td {
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+
+.return-table td {
+  padding: 12px 0;
+  font-size: 14px;
+}
+
+.return-table td:first-child { color: var(--muted); }
+.return-table td:last-child { color: var(--white); font-weight: 600; text-align: left; }
+
+.timeline-bar {
+  margin-top: 20px;
+  position: relative;
+}
+
+.timeline-bar-track {
+  height: 8px;
+  background: rgba(255,255,255,0.08);
+  border-radius: 4px;
+  overflow: hidden;
+  margin-top: 8px;
+}
+
+.timeline-bar-fill {
+  height: 100%;
+  border-radius: 4px;
+  background: linear-gradient(90deg, var(--navy3), var(--gold));
+  animation: fillBar 1.5s ease forwards;
+}
+
+@keyframes fillBar {
+  from { width: 0; }
+  to { width: 100%; }
+}
+
+.timeline-markers {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 8px;
+  font-size: 11px;
+  color: var(--muted);
+}
+
+/* ─────────────────────────────────────────
+   SLIDE 12 — RISK MANAGEMENT
+───────────────────────────────────────── */
+#slide-12 {
+  background: var(--navy2);
+  padding: 50px 80px;
+}
+
+.risk-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 20px;
+  margin-top: 28px;
+}
+
+.risk-card {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(201,168,76,0.12);
+  border-radius: 14px;
+  padding: 22px 20px;
+}
+
+.risk-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.risk-icon-wrap {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  background: rgba(201,168,76,0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  flex-shrink: 0;
+}
+
+.risk-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--white);
+}
+
+.risk-items {
+  list-style: none;
+}
+
+.risk-items li {
+  font-size: 12.5px;
+  color: var(--muted);
+  line-height: 1.6;
+  padding: 4px 0;
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+}
+
+.risk-items li::before {
+  content: '✓';
+  color: #4ade80;
+  font-size: 11px;
+  margin-top: 2px;
+  flex-shrink: 0;
+}
+
+/* ─────────────────────────────────────────
+   SLIDE 13 — PIPELINE / KOLÍN
+───────────────────────────────────────── */
+#slide-13 {
+  background: #060E1C;
+  overflow: hidden;
+}
+
+#slide-13 .kolín-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  height: 100%;
+}
+
+#slide-13 .kolín-imgs {
+  position: relative;
+  overflow: hidden;
+}
+
+#slide-13 .kolín-imgs .img-top {
+  width: 100%;
+  height: 55%;
+  object-fit: cover;
+  filter: saturate(0.8);
+}
+
+#slide-13 .kolín-imgs .img-bot {
+  width: 100%;
+  height: 45%;
+  object-fit: cover;
+  filter: saturate(0.7);
+  opacity: 0.85;
+}
+
+#slide-13 .kolín-imgs::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent 60%, #060E1C 100%);
+}
+
+#slide-13 .kolín-content {
+  padding: 50px 40px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  overflow-y: auto;
+}
+
+/* ─────────────────────────────────────────
+   SLIDE 14 — INVESTMENT TERMS & CTA
+───────────────────────────────────────── */
+#slide-14 {
+  background: linear-gradient(135deg, #060E1C 0%, #0A1628 60%, #0D1E35 100%);
+  padding: 50px 80px;
+  justify-content: center;
+}
+
+.cta-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+  margin-top: 28px;
+  align-items: start;
+}
+
+.terms-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.terms-table tr:not(:last-child) td {
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+
+.terms-table td {
+  padding: 14px 0;
+  font-size: 14px;
+  vertical-align: top;
+}
+
+.terms-table td:first-child {
+  color: var(--muted);
+  font-size: 12px;
+  letter-spacing: 0.5px;
+  width: 45%;
+}
+
+.terms-table td:last-child {
+  color: var(--white);
+  font-weight: 600;
+}
+
+.cta-box {
+  background: linear-gradient(135deg, rgba(201,168,76,0.15), rgba(201,168,76,0.04));
+  border: 2px solid rgba(201,168,76,0.4);
+  border-radius: 20px;
+  padding: 36px;
+  text-align: center;
+}
+
+.cta-title {
+  font-size: 24px;
+  font-weight: 800;
+  color: var(--white);
+  margin-bottom: 8px;
+}
+
+.cta-sub {
+  font-size: 14px;
+  color: var(--muted);
+  line-height: 1.6;
+  margin-bottom: 28px;
+}
+
+.cta-contact {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  text-align: right;
+}
+
+.contact-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  background: rgba(255,255,255,0.04);
+  border-radius: 10px;
+  padding: 12px 16px;
+}
+
+.contact-icon { font-size: 18px; flex-shrink: 0; }
+.contact-info { font-size: 13px; color: var(--light); }
+.contact-info .name { font-weight: 700; color: var(--white); }
+
+/* ─────────────────────────────────────────
+   SLIDE 15 — DISCLAIMER
+───────────────────────────────────────── */
+#slide-15 {
+  background: var(--navy);
+  padding: 60px 100px;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+#slide-15 .disc-content {
+  max-width: 700px;
+}
+
+#slide-15 .disc-title {
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 3px;
+  color: var(--gold);
+  text-transform: uppercase;
+  margin-bottom: 16px;
+}
+
+#slide-15 .disc-text {
+  font-size: 12px;
+  color: var(--muted);
+  line-height: 1.8;
+  margin-bottom: 32px;
+}
+
+#slide-15 .logo-footer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+#slide-15 .logo-footer img {
+  width: 56px;
+  height: 56px;
+  object-fit: contain;
+  border-radius: 10px;
+  opacity: 0.8;
+}
+
+#slide-15 .logo-footer span {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--muted);
+  letter-spacing: 3px;
+  text-transform: uppercase;
+}
+</style>
+</head>
+<body>
+<div class="presentation" id="presentation">
+
+<!-- ═══════════════════════════════════════
+     SLIDE 1 — COVER
+══════════════════════════════════════════ -->
+<div class="slide active" id="slide-1">
+  <div class="cover-bg"></div>
+  <div class="cover-img"></div>
+  <div class="bg-grid"></div>
+  <div class="confidential">סודי ומיועד למשקיעים מוסמכים בלבד</div>
+  <div class="cover-content">
+    <div class="logo-wrap">
+      <img src="images/logo.jpeg" alt="Czechia Israel Logo">
+    </div>
+    <div class="company-name">Czechia Israel</div>
+    <h1 class="cover-headline">הזדמנות השקעה<br>במלאדה בולסלב</h1>
+    <p class="cover-sub">רכישת קרקע עם היתר בנייה בשותפות עם BCD Group<br>פיתוח 154 יחידות דיור ו־1,600 מ״ר מסחרי</p>
+    <div class="cover-tags">
+      <span class="tag">צ׳כיה 2025</span>
+      <span class="tag">IRR 27.8%</span>
+      <span class="tag">MOIC 1.83x</span>
+      <span class="tag">אופק 3 שנים</span>
+    </div>
+    <div class="cover-stats">
+      <div class="stat-item">
+        <div class="stat-num">8</div>
+        <div class="stat-label">פרויקטים מוכחים</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">456+</div>
+        <div class="stat-label">יחידות דיור</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">100%</div>
+        <div class="stat-label">תשואה עיסקה ראשונה</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════
+     SLIDE 2 — EXECUTIVE SUMMARY
+══════════════════════════════════════════ -->
+<div class="slide" id="slide-2">
+  <div class="bg-pattern"></div>
+  <div style="padding: 60px 80px; display:flex; flex-direction:column; height:100%;">
+    <div class="slide-label">סיכום מנהלים</div>
+    <h2 class="slide-title">ההשקעה בקצרה</h2>
+    <div class="gold-line"></div>
+
+    <div class="exec-grid">
+      <div class="exec-card">
+        <div class="exec-card-icon">🏗️</div>
+        <div class="exec-card-title">הפרויקט</div>
+        <div class="exec-card-content">
+          רכישת קרקע עם <strong>היתר בנייה בתוקף</strong> בלב מלאדה בולסלב, העיר השלישית בצ׳כיה מבחינת עוצמה כלכלית.<br><br>
+          פיתוח <strong>154 יחידות דיור</strong> ו־1,600 מ״ר מסחרי בשותפות מלאה עם BCD Group — שחקן מוביל עם 20+ שנות ניסיון ואלפי יחידות דיור בצ׳כיה.
+        </div>
+      </div>
+      <div class="exec-card">
+        <div class="exec-card-icon">💰</div>
+        <div class="exec-card-title">מבנה ההשקעה</div>
+        <div class="exec-card-content">
+          <strong>שלב א׳:</strong> רכישת מגרש — 55 מיליון CZK<br>
+          צ׳כיה ישראל: 70% (38.5M CZK) | BCD Group: 30%<br><br>
+          <strong>שלב ב׳:</strong> הוצאות פיתוח (~20M CZK) — 50/50<br><br>
+          <strong>שלב ג׳:</strong> ליווי בנקאי לבנייה עצמה<br><br>
+          <strong>חלוקת רווחים: 50/50</strong> לאחר החזרת ההשקעה
+        </div>
+      </div>
+      <div class="exec-card">
+        <div class="exec-card-icon">📈</div>
+        <div class="exec-card-title">תשואות</div>
+        <div class="exec-card-content">
+          <strong>IRR: 27.8%</strong> שנתי<br>
+          <strong>MOIC: 1.83x</strong> על ההשקעה<br>
+          <strong>אופק השקעה: 3 שנים</strong><br><br>
+          השקעה מינימלית: 1,000,000 CZK (≈ ₪190,000)<br>
+          הון עצמי כולל: 48.5M CZK
+        </div>
+      </div>
+      <div class="exec-card">
+        <div class="exec-card-icon">✅</div>
+        <div class="exec-card-title">יתרונות מרכזיים</div>
+        <div class="exec-card-content">
+          ◆ <strong>היתר בנייה בתוקף</strong> — ריסק נמוך משמעותית<br>
+          ◆ שכנות ישירה לפרויקט <strong>Skanska</strong> — אימות שוק<br>
+          ◆ <strong>23,000+</strong> עובדי סקודה — ביקוש מובנה<br>
+          ◆ צוות מוכח — <strong>8 עסקאות מוצלחות</strong> מאז 2022<br>
+          ◆ ניסיון מקומי עמוק עם BCD Group
+        </div>
+      </div>
+    </div>
+
+    <div class="highlight-box">
+      <div class="highlight-num">100%</div>
+      <div class="highlight-text">
+        תשואה למשקיעי העסקה הראשונה (Emil Kolben, פראג) — בפחות משנתיים.<br>
+        <span style="color:var(--muted); font-size:13px;">אנחנו בונים על הצלחה זו עם עסקה מורכבת ומתוחכמת יותר, עם פוטנציאל תשואה גבוה יותר.</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════
+     SLIDE 3 — ABOUT THE COMPANY
+══════════════════════════════════════════ -->
+<div class="slide" id="slide-3">
+  <div class="bg-pattern"></div>
+  <div style="padding: 60px 80px; display:flex; flex-direction:column; height:100%;">
+    <div class="slide-label">על החברה</div>
+    <h2 class="slide-title">צ׳כיה ישראל</h2>
+    <div class="gold-line"></div>
+
+    <div class="about-layout">
+      <div>
+        <p class="about-text" style="margin-bottom:0;">
+          <p style="font-size:15px; color:var(--light); line-height:1.8; margin-bottom:16px;">
+            <strong style="color:var(--white);">צ׳כיה ישראל</strong> היא חברה ישראלית המתמחה בהשקעות נדל״ן בצ׳כיה. החברה הוקמה על ידי שלושה שותפים בעלי ניסיון עשיר בעסקים, נדל״ן ופיננסים, ומאז 2022 ביצעה 8 עסקאות מוצלחות בחמש ערים.
+          </p>
+          <p style="font-size:15px; color:var(--light); line-height:1.8; margin-bottom:16px;">
+            המודל העסקי של החברה מבוסס על <strong style="color:var(--white);">שיתופי פעולה אסטרטגיים</strong> עם שחקנים מקומיים מובילים בצ׳כיה, מינוף ידע מקומי עמוק לצד משמעת פיננסית של משקיעים ישראלים.
+          </p>
+          <p style="font-size:15px; color:var(--light); line-height:1.8;">
+            השותף האסטרטגי המרכזי של החברה הוא <strong style="color:var(--gold);">BCD Group</strong> — קבוצה עם למעלה מ-20 שנות ניסיון בפיתוח נדל״ן בצ׳כיה, אחראית על פיתוח <strong style="color:var(--white);">אלפי יחידות דיור</strong> ברחבי המדינה.
+          </p>
+        </p>
+
+        <div class="gold-line" style="margin-top:20px;"></div>
+        <ul class="milestone-list">
+          <li><span class="year">2022</span>עסקת Emil Kolben, פראג — 30 יחידות בפריסייל מסקנסקה. תשואה: 100% בפחות מ-2 שנים.</li>
+          <li><span class="year">2023</span>רכישת חברה המחזיקה 2 בניינים בצרניצה — 30 דירות, מודל hold-and-sell.</li>
+          <li><span class="year">2024</span>השקה מקבילה של 4 פרויקטים: קולין (70+86 יחידות), פילזן (45 יח׳), אוסטרבה (2 פרויקטים).</li>
+          <li><span class="year">2025</span>כניסה לעסקת מלאדה בולסלב — הפרויקט הגדול ביותר עד כה.</li>
+        </ul>
+      </div>
+
+      <div class="about-stats-grid">
+        <div class="kpi-card">
+          <div class="kpi-num">8</div>
+          <div class="kpi-label">עסקאות מוצלחות</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-num">456+</div>
+          <div class="kpi-label">יחידות דיור בניהול ופיפליין</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-num">5</div>
+          <div class="kpi-label">ערים פעילות בצ׳כיה</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-num">20+</div>
+          <div class="kpi-label">שנות ניסיון BCD Group</div>
+        </div>
+        <div class="kpi-card" style="grid-column: 1/-1;">
+          <div class="kpi-num" style="font-size:28px;">BCD Group</div>
+          <div class="kpi-label" style="margin-top:6px;">שותף אסטרטגי — אלפי יחידות דיור בצ׳כיה. ניסיון תכנון, הוצאת היתרים, שיווק ומכירות.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════
+     SLIDE 4 — TEAM
+══════════════════════════════════════════ -->
+<div class="slide" id="slide-4">
+  <div class="bg-pattern"></div>
+  <div style="padding: 50px 80px; display:flex; flex-direction:column; height:100%; overflow-y:auto;">
+    <div class="slide-label">הצוות המוביל</div>
+    <h2 class="slide-title">השותפים</h2>
+    <div class="gold-line"></div>
+
+    <div class="team-grid">
+      <div class="team-card">
+        <div class="team-photo-wrap">
+          <img src="images/team-menachem.jpg" alt="מנחם שופל">
+          <div class="team-photo-overlay"></div>
+        </div>
+        <div class="team-info">
+          <div class="partner-badge">שותף מייסד</div>
+          <div class="team-name">מנחם שופל</div>
+          <div class="team-role">ניהול השקעות ואסטרטגיה</div>
+          <p class="team-desc">יזם ואיש עסקים עם ניסיון רב בניהול השקעות, גיוס הון וניהול פרויקטים מורכבים. מוביל את קשרי המשקיעים ואסטרטגיית ההשקעות של החברה.</p>
+        </div>
+      </div>
+
+      <div class="team-card">
+        <div class="team-photo-wrap">
+          <img src="images/team-yair.png" alt="יאיר שופל">
+          <div class="team-photo-overlay"></div>
+        </div>
+        <div class="team-info">
+          <div class="partner-badge">שותף מייסד</div>
+          <div class="team-name">יאיר שופל</div>
+          <div class="team-role">פיננסים ומימון</div>
+          <p class="team-desc">מומחה פיננסי עם רקע עמוק בניהול עסקי וכלכלה. אחראי על מבני המימון, ניתוח הכדאיות הכלכלית וניהול הסיכונים הפיננסיים של הפרויקטים.</p>
+        </div>
+      </div>
+
+      <div class="team-card">
+        <div class="team-photo-wrap">
+          <img id="roni-photo" src="images/team-roni.jpeg" alt="רוני שייקביץ">
+          <div class="team-photo-overlay"></div>
+        </div>
+        <div class="team-info">
+          <div class="partner-badge">שותף מייסד</div>
+          <div class="team-name">רוני שייקביץ</div>
+          <div class="team-role">פיתוח עסקי ותפעול</div>
+          <p class="team-desc">בעל ניסיון עסקי רב-תחומי ומיומנויות ניהול מוכחות. מוביל את הפיתוח העסקי, ניהול הקשרים עם שותפים מקומיים בצ׳כיה ותיאום הפרויקטים.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="team-footer">
+      <span style="color:var(--gold); font-weight:600;">רשת מקצועית בצ׳כיה</span> — בנוסף לצוות הניהולי, החברה עובדת עם רשת נבחרת של משרדי עורכי דין, אדריכלים ומהנדסים מקומיים מובילים בצ׳כיה.
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════
+     SLIDE 5 — TRACK RECORD
+══════════════════════════════════════════ -->
+<div class="slide" id="slide-5">
+  <div class="bg-pattern"></div>
+  <div style="padding: 50px 80px; display:flex; flex-direction:column; height:100%; overflow-y:auto;">
+    <div class="slide-label">רזומה השקעות</div>
+    <h2 class="slide-title">תיק העסקאות המוכח</h2>
+    <div class="gold-line"></div>
+
+    <div class="track-summary">
+      <div class="ts-item"><div class="ts-num">8</div><div class="ts-label">עסקאות</div></div>
+      <div class="ts-item"><div class="ts-num">456+</div><div class="ts-label">יחידות דיור</div></div>
+      <div class="ts-item"><div class="ts-num">5</div><div class="ts-label">ערים</div></div>
+      <div class="ts-item"><div class="ts-num">100%</div><div class="ts-label">תשואה עסקה 1</div></div>
+    </div>
+
+    <table class="track-table">
+      <thead>
+        <tr>
+          <th>פרויקט</th>
+          <th>עיר</th>
+          <th>יח׳ / מסחר</th>
+          <th>מודל</th>
+          <th>סטטוס</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong style="color:var(--white);">Emil Kolben</strong> — 30 דירות פריסייל</td>
+          <td>פראג</td>
+          <td>30 יח׳</td>
+          <td>פריסייל → מכירה</td>
+          <td><span class="status-badge status-done">הושלם ✓</span></td>
+        </tr>
+        <tr>
+          <td><strong style="color:var(--white);">Černice</strong> — 2 בניינים</td>
+          <td>צרניצה</td>
+          <td>30 יח׳</td>
+          <td>רכישת חברה, שכירות → מכירה</td>
+          <td><span class="status-badge status-active">מחזיק ומושכר</span></td>
+        </tr>
+        <tr>
+          <td><strong style="color:var(--white);">Rezidence Hradební</strong></td>
+          <td>קולין</td>
+          <td>70 יח׳ + 1,200 מ״ר</td>
+          <td>שותפות BCD, פיתוח</td>
+          <td><span class="status-badge status-active">בנייה + מכירות</span></td>
+        </tr>
+        <tr>
+          <td><strong style="color:var(--white);">Rezidence Sokolská</strong></td>
+          <td>קולין</td>
+          <td>86 יח׳ + 300 מ״ר</td>
+          <td>שותפות BCD, פיתוח</td>
+          <td><span class="status-badge status-pipeline">בשלבי היתר</span></td>
+        </tr>
+        <tr>
+          <td><strong style="color:var(--white);">Korandova</strong></td>
+          <td>פילזן</td>
+          <td>45 יח׳</td>
+          <td>פריסייל (כמו Emil Kolben)</td>
+          <td><span class="status-badge status-active">רכישה בתהליך</span></td>
+        </tr>
+        <tr>
+          <td><strong style="color:var(--white);">Františka Formana</strong></td>
+          <td>אוסטרבה</td>
+          <td>39 יח׳</td>
+          <td>שותפות, פיתוח</td>
+          <td><span class="status-badge status-pipeline">תכנון אדריכלי</span></td>
+        </tr>
+        <tr>
+          <td><strong style="color:var(--white);">Bytový dům Horní</strong></td>
+          <td>אוסטרבה</td>
+          <td>~101 יח׳ + 1,800 מ״ר</td>
+          <td>שותפות, פיתוח</td>
+          <td><span class="status-badge status-pipeline">תכנון אדריכלי</span></td>
+        </tr>
+        <tr>
+          <td><strong style="color:var(--gold);">מלאדה בולסלב</strong> — הפרויקט הנוכחי</td>
+          <td>מלאדה בולסלב</td>
+          <td>154 יח׳ + 1,600 מ״ר</td>
+          <td>שותפות BCD, קרקע+פיתוח</td>
+          <td><span class="status-badge status-active">גיוס הון ◆</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════
+     SLIDE 6 — EMIL KOLBEN SUCCESS STORY
+══════════════════════════════════════════ -->
+<div class="slide" id="slide-6">
+  <div class="hero-layout">
+    <div class="hero-img-side">
+      <img src="images/emil-kolben-1.jpeg" alt="Emil Kolben Prague">
+    </div>
+    <div class="hero-content">
+      <div class="slide-label">סיפור הצלחה</div>
+      <h2 class="slide-title" style="font-size:clamp(24px,3.5vw,42px); margin-bottom:8px;">Emil Kolben, פראג</h2>
+      <div class="gold-line"></div>
+
+      <div class="big-return">100%</div>
+      <div class="big-return-sub">תשואה למשקיעים — בפחות משנתיים</div>
+
+      <ul class="fact-list">
+        <li><strong>הזדמנות:</strong> רכישת 30 דירות בפריסייל מסקנסקה — חברת הנדל״ן הגדולה בסקנדינביה.</li>
+        <li><strong>אסטרטגיה:</strong> רכישה בשלב הכי מוקדם, מכירה לאחר השלמת הבנייה — מינוף עליית מחירים.</li>
+        <li><strong>שוק:</strong> פראג — ביקוש עקבי, מחירים עולים תמידית, רוכשים מקומיים ובינלאומיים.</li>
+        <li><strong>תוצאה:</strong> מכירת כל 30 הדירות ברווח — משקיעים קיבלו 100% תשואה על השקעתם.</li>
+        <li><strong>לקח:</strong> מודל פריסייל מוכח — אנו מיישמים אותו כעת גם בפילזן (Korandova).</li>
+      </ul>
+
+      <div style="margin-top:24px; background:rgba(201,168,76,0.08); border:1px solid rgba(201,168,76,0.25); border-radius:12px; padding:16px 20px;">
+        <div style="font-size:12px; color:var(--gold); letter-spacing:1px; margin-bottom:6px; font-weight:700; text-transform:uppercase;">שותף אסטרטגי</div>
+        <div style="font-size:14px; color:var(--light); line-height:1.6;">
+          Skanska — ענקית הנדל״ן הסקנדינבית, אחת הגדולות בעולם. הנוכחות שלה בצ׳כיה (ועכשיו גם במלאדה בולסלב) היא אימות שוק בלתי תלוי לאיכות האזורים שבחרנו.
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════
+     SLIDE 7 — WHY CZECH REPUBLIC
+══════════════════════════════════════════ -->
+<div class="slide" id="slide-7">
+  <div class="bg-pattern"></div>
+  <div style="padding: 50px 80px; display:flex; flex-direction:column; height:100%;">
+    <div class="slide-label">מאקרו</div>
+    <h2 class="slide-title">למה להשקיע בצ׳כיה?</h2>
+    <div class="gold-line"></div>
+
+    <div class="macro-grid">
+      <div class="macro-card">
+        <div class="macro-card-top">
+          <div class="macro-icon">🏦</div>
+          <div>
+            <div class="macro-card-title">כלכלה יציבה ומתפתחת</div>
+            <div class="macro-card-stat">GDP: $330B | חבר NATO + EU</div>
+          </div>
+        </div>
+        <div class="macro-card-text">
+          צ׳כיה היא הכלכלה <strong>החזקה ביותר במרכז אירופה</strong> ביחס לגודלה. תמ״ג לנפש גבוה מישראל, אינפלציה בשליטה (3.4%), ריבית יורדת — כלכלה בעלת צמיחה מתמשכת.
+          <br><br>
+          <strong>אבטלה: 2.6%</strong> — מהנמוכות בכל מדינות ה-OECD. מרקר ביקוש יציב לדיור.
+        </div>
+      </div>
+
+      <div class="macro-card">
+        <div class="macro-card-top">
+          <div class="macro-icon">📊</div>
+          <div>
+            <div class="macro-card-title">עליית מחירי הדיור — 20 שנה</div>
+            <div class="macro-card-stat">+340% מ-2004 | לא היה צלילה</div>
+          </div>
+        </div>
+        <div class="macro-card-text" style="margin-bottom:8px;">
+          מחירי הדיור בפראג ובערים הראשיות עלו <strong>ללא הפסקה</strong> מאז הצטרפות לאיחוד האירופי ב-2004. גם בזמן המשבר הגלובלי — יציבות מוחלטת.
+        </div>
+
+        <!-- SVG 20-year price chart -->
+        <div class="chart-wrap">
+          <div class="chart-title">מדד מחירי הדירות, פראג 2004–2024 (בסיס 100)</div>
+          <svg viewBox="0 0 400 120" width="100%" style="display:block;">
+            <defs>
+              <linearGradient id="priceGrad" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#C9A84C" stop-opacity="0.4"/>
+                <stop offset="100%" stop-color="#C9A84C" stop-opacity="0.02"/>
+              </linearGradient>
+            </defs>
+            <!-- Grid lines -->
+            <line x1="30" y1="10" x2="390" y2="10" stroke="rgba(255,255,255,0.05)" stroke-width="1"/>
+            <line x1="30" y1="35" x2="390" y2="35" stroke="rgba(255,255,255,0.05)" stroke-width="1"/>
+            <line x1="30" y1="60" x2="390" y2="60" stroke="rgba(255,255,255,0.05)" stroke-width="1"/>
+            <line x1="30" y1="85" x2="390" y2="85" stroke="rgba(255,255,255,0.05)" stroke-width="1"/>
+            <line x1="30" y1="105" x2="390" y2="105" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+            <!-- Y-axis labels -->
+            <text x="25" y="13" text-anchor="end" fill="#8A9BB5" font-size="8" font-family="Heebo">440</text>
+            <text x="25" y="38" text-anchor="end" fill="#8A9BB5" font-size="8" font-family="Heebo">330</text>
+            <text x="25" y="63" text-anchor="end" fill="#8A9BB5" font-size="8" font-family="Heebo">220</text>
+            <text x="25" y="88" text-anchor="end" fill="#8A9BB5" font-size="8" font-family="Heebo">110</text>
+            <text x="25" y="108" text-anchor="end" fill="#8A9BB5" font-size="8" font-family="Heebo">100</text>
+            <!-- Area fill -->
+            <path d="M30,105 L48,103 L66,100 L84,98 L102,95 L120,90 L138,86 L156,83 L174,80 L192,76 L210,70 L228,60 L246,50 L264,42 L282,32 L300,24 L318,18 L336,14 L354,11 L372,10 L390,10 L390,105 Z"
+              fill="url(#priceGrad)"/>
+            <!-- Price line -->
+            <polyline
+              points="30,105 48,103 66,100 84,98 102,95 120,90 138,86 156,83 174,80 192,76 210,70 228,60 246,50 264,42 282,32 300,24 318,18 336,14 354,11 372,10 390,10"
+              fill="none" stroke="#C9A84C" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>
+            <!-- Year labels -->
+            <text x="30" y="118" text-anchor="middle" fill="#8A9BB5" font-size="7.5" font-family="Heebo">2004</text>
+            <text x="102" y="118" text-anchor="middle" fill="#8A9BB5" font-size="7.5" font-family="Heebo">2008</text>
+            <text x="174" y="118" text-anchor="middle" fill="#8A9BB5" font-size="7.5" font-family="Heebo">2012</text>
+            <text x="246" y="118" text-anchor="middle" fill="#8A9BB5" font-size="7.5" font-family="Heebo">2016</text>
+            <text x="318" y="118" text-anchor="middle" fill="#8A9BB5" font-size="7.5" font-family="Heebo">2020</text>
+            <text x="390" y="118" text-anchor="middle" fill="#8A9BB5" font-size="7.5" font-family="Heebo">2024</text>
+            <!-- End dot -->
+            <circle cx="390" cy="10" r="4" fill="#C9A84C"/>
+            <text x="382" y="8" text-anchor="end" fill="#C9A84C" font-size="8" font-weight="bold" font-family="Heebo">×4.4</text>
+          </svg>
+        </div>
+      </div>
+
+      <div class="macro-card">
+        <div class="macro-card-top">
+          <div class="macro-icon">🏠</div>
+          <div>
+            <div class="macro-card-title">תרבות רכישת דירה</div>
+            <div class="macro-card-stat">80%+ בעלות פרטית על דיור</div>
+          </div>
+        </div>
+        <div class="macro-card-text">
+          הצ׳כים מאמינים בבעלות על דירה. <strong>80%+ מהאוכלוסייה</strong> מחזיקה בדירה בבעלותה — שיעור גבוה מהממוצע האירופי. זה יוצר ביקוש מובנה ועמיד לרכישת דירות חדשות.
+          <br><br>
+          מחסור חמור ביחידות דיור חדשות בכל הערים הראשיות — <strong>הביקוש עולה על ההיצע</strong> מזה שנים.
+        </div>
+      </div>
+
+      <div class="macro-card">
+        <div class="macro-card-top">
+          <div class="macro-icon">🌍</div>
+          <div>
+            <div class="macro-card-title">יעד למשקיעים בינלאומיים</div>
+            <div class="macro-card-stat">מטבע יציב | שוק מוסדר</div>
+          </div>
+        </div>
+        <div class="macro-card-text">
+          צ׳כיה היא <strong>יעד השקעות מועדף</strong> למשקיעי נדל״ן מגרמניה, אוסטריה וישראל. שוק שקוף, מסגרת משפטית אירופית, ועלויות בנייה נמוכות ב-30% מגרמניה.
+          <br><br>
+          ריבית בנקאית יורדת ב-2024–2025 — <strong>מאיצה ביקוש רכישה</strong> ומוזילה עלויות ליווי.
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════
+     SLIDE 8 — WHY MLADA BOLESLAV
+══════════════════════════════════════════ -->
+<div class="slide" id="slide-8">
+  <div class="bg-pattern"></div>
+  <div style="padding: 50px 80px; display:flex; flex-direction:column; height:100%;">
+    <div class="slide-label">הזדמנות מקומית</div>
+    <h2 class="slide-title">מלאדה בולסלב — עיר הצמיחה</h2>
+    <div class="gold-line"></div>
+
+    <div class="city-layout">
+      <div class="city-facts">
+        <div class="city-fact">
+          <div class="city-fact-icon">🏭</div>
+          <div>
+            <div class="city-fact-title">מנוע כלכלי: סקודה אוטו</div>
+            <div class="city-fact-text">מפעל הייצור הראשי של <strong>Škoda Auto</strong> — חברת הבת של פולקסווגן — ממוקם בלב מלאדה בולסלב. <strong>23,000+ עובדים</strong> ישירים, ועוד אלפים בספקים. ביקוש מובנה ויציב לדיור.</div>
+          </div>
+        </div>
+        <div class="city-fact">
+          <div class="city-fact-icon">📍</div>
+          <div>
+            <div class="city-fact-title">מיקום אסטרטגי</div>
+            <div class="city-fact-text"><strong>50 ק״מ מפראג</strong> — נסיעה של 45 דקות. העיר השלישית בחשיבותה הכלכלית בצ׳כיה. מרכז תעשיה, מחקר ופיתוח של ענף הרכב.</div>
+          </div>
+        </div>
+        <div class="city-fact">
+          <div class="city-fact-icon">🏗️</div>
+          <div>
+            <div class="city-fact-title">Skanska — אישור שוק בלתי תלוי</div>
+            <div class="city-fact-text">ענקית הנדל״ן הסקנדינבית <strong>בונה במתחם שלנו ממש</strong> — זוהי לפי הידוע לנו <strong>הפעם הראשונה שסקנסקה יוצאת מפראג</strong>. זה אימות עצמאי לאיכות המיקום.</div>
+          </div>
+        </div>
+        <div class="city-fact">
+          <div class="city-fact-icon">📈</div>
+          <div>
+            <div class="city-fact-title">מחסור קשה בדיור חדש</div>
+            <div class="city-fact-text">מחסור כרוני ביחידות דיור חדשות בעיר. <strong>הביקוש עולה בעקביות על ההיצע</strong>. זמן שיווק קצר וביקוש גבוה גם מקומיים וגם ממשפחות עובדי סקודה.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="city-stats-side">
+        <div class="city-stat-big">
+          <div class="num">50K</div>
+          <div class="lbl">תושבים — עיר שלישה בגודלה הכלכלי בצ׳כיה</div>
+        </div>
+        <div class="city-stat-big">
+          <div class="num">23,000+</div>
+          <div class="lbl">עובדי סקודה — ביקוש מובנה לדיור</div>
+        </div>
+        <div class="city-stat-big">
+          <div class="num">50 ק״מ</div>
+          <div class="lbl">ממרכז פראג — נגישות גבוהה</div>
+        </div>
+        <div class="skanska-box">
+          <div class="skanska-title">⬡ SKANSKA — אישור עצמאי</div>
+          <div class="skanska-text">
+            סקנסקה, מוכרת לנו מפרויקט Emil Kolben בפראג, החליטה לבנות במתחם שלנו במלאדה בולסלב. הם בשלבי הוצאת היתר — <strong style="color:var(--light);">לנו כבר יש היתר בנייה בתוקף.</strong>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════
+     SLIDE 9 — THE PROJECT
+══════════════════════════════════════════ -->
+<div class="slide" id="slide-9">
+  <div class="project-layout">
+    <div class="project-gallery">
+      <img class="main-img" src="images/kolin/render-000.jpg" alt="Project Render">
+      <div class="thumb-row">
+        <img src="images/kolin/render-001.jpg" alt="">
+        <img src="images/kolin/render-003.jpg" alt="">
+      </div>
+    </div>
+    <div class="project-content">
+      <div class="slide-label">הפרויקט</div>
+      <h2 class="slide-title" style="font-size:clamp(22px,3vw,38px);">מלאדה בולסלב<br><span style="color:var(--gold);">154 יחידות דיור</span></h2>
+      <div class="gold-line"></div>
+
+      <p style="font-size:14px; color:var(--muted); line-height:1.7; margin-bottom:16px;">
+        פרויקט ייעודי למגורים ומסחר בלב מלאדה בולסלב. קרקע עם <strong style="color:var(--white);">היתר בנייה בתוקף</strong> — יתרון משמעותי על פני מרבית הפרויקטים באזור.
+      </p>
+
+      <div class="project-spec-grid">
+        <div class="spec-item">
+          <div class="spec-label">יחידות דיור</div>
+          <div class="spec-value">154</div>
+        </div>
+        <div class="spec-item">
+          <div class="spec-label">מסחרי</div>
+          <div class="spec-value">1,600 מ״ר</div>
+        </div>
+        <div class="spec-item">
+          <div class="spec-label">מחיר קרקע</div>
+          <div class="spec-value">55M CZK</div>
+        </div>
+        <div class="spec-item">
+          <div class="spec-label">היתר בנייה</div>
+          <div class="spec-value">✓ בתוקף</div>
+        </div>
+        <div class="spec-item">
+          <div class="spec-label">תחילת בנייה</div>
+          <div class="spec-value">תוך ~6 חודשים</div>
+        </div>
+        <div class="spec-item">
+          <div class="spec-label">זמן בנייה</div>
+          <div class="spec-value">~2 שנים</div>
+        </div>
+        <div class="spec-item">
+          <div class="spec-label">שותף יזם</div>
+          <div class="spec-value">BCD Group</div>
+        </div>
+        <div class="spec-item">
+          <div class="spec-label">אופק כולל</div>
+          <div class="spec-value">~3 שנים</div>
+        </div>
+      </div>
+
+      <div style="margin-top:20px; padding:14px 18px; background:rgba(201,168,76,0.07); border:1px solid rgba(201,168,76,0.2); border-radius:10px; font-size:13px; color:var(--muted); line-height:1.6;">
+        ⚡ <strong style="color:var(--gold);">יתרון תחרותי:</strong> בעוד Skanska עדיין בשלבי הוצאת היתר, לנו יש כבר <strong style="color:var(--white);">היתר בנייה מאושר</strong> — מאפשר לנו להתחיל בנייה מוקדם יותר ולמכור מוקדם יותר.
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════
+     SLIDE 10 — DEAL STRUCTURE
+══════════════════════════════════════════ -->
+<div class="slide" id="slide-10">
+  <div class="bg-pattern"></div>
+  <div style="padding: 50px 80px; display:flex; flex-direction:column; height:100%;">
+    <div class="slide-label">מבנה העסקה</div>
+    <h2 class="slide-title">איך זה עובד</h2>
+    <div class="gold-line"></div>
+
+    <!-- Deal flow diagram -->
+    <div class="deal-diagram">
+      <div class="deal-row">
+        <div class="deal-box gold-box">
+          <div class="deal-box-title">משקיעי צ׳כיה ישראל</div>
+          <div class="deal-box-sub">הון עצמי</div>
+          <div class="deal-box-pct">48.5M CZK</div>
+        </div>
+        <div class="deal-box" style="background:rgba(26,58,110,0.3); border-color:rgba(100,150,255,0.3);">
+          <div class="deal-box-title">BCD Group</div>
+          <div class="deal-box-sub">יזם שותף</div>
+          <div class="deal-box-pct" style="color:#7EB8FF;">~16.5M CZK</div>
+        </div>
+      </div>
+
+      <div class="deal-arrow">▼</div>
+
+      <div class="deal-row">
+        <div class="deal-box center-box">
+          <div class="deal-box-title" style="font-size:16px;">פרויקט מלאדה בולסלב</div>
+          <div class="deal-box-sub" style="margin-top:6px;">154 יח׳ + 1,600 מ״ר מסחרי</div>
+          <div style="margin-top:10px; font-size:12px; color:var(--muted);">קרקע + פיתוח + ליווי בנקאי</div>
+        </div>
+      </div>
+
+      <div class="deal-arrow">▼</div>
+
+      <div class="deal-row">
+        <div class="deal-box">
+          <div class="deal-box-title">ליווי בנקאי</div>
+          <div class="deal-box-sub">מימון בנייה</div>
+          <div style="font-size:12px; color:var(--muted); margin-top:6px;">~60-65% LTC</div>
+        </div>
+        <div class="deal-box gold-box">
+          <div class="deal-box-title">הכנסות מכירות</div>
+          <div class="deal-box-sub">154 יח׳ + מסחר</div>
+          <div class="deal-box-pct">חלוקה 50/50</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="deal-phases">
+      <div class="phase-card">
+        <div class="phase-num">שלב א׳</div>
+        <div class="phase-title">רכישת קרקע</div>
+        <div class="phase-text">55M CZK סה״כ<br>צ׳כיה ישראל: 70% = 38.5M<br>BCD: 30% = 16.5M</div>
+      </div>
+      <div class="phase-card">
+        <div class="phase-num">שלב ב׳</div>
+        <div class="phase-title">הוצאות פיתוח</div>
+        <div class="phase-text">~20M CZK סה״כ<br>50/50 שני הצדדים<br>תכנון, היתרים, תשתיות</div>
+      </div>
+      <div class="phase-card">
+        <div class="phase-num">שלב ג׳</div>
+        <div class="phase-title">ליווי בנקאי + מכירות</div>
+        <div class="phase-text">מימון הבנייה עצמה<br>מכירות מוקדמות במקביל<br>חלוקת רווחים 50/50</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════
+     SLIDE 11 — FINANCIAL RETURNS
+══════════════════════════════════════════ -->
+<div class="slide" id="slide-11">
+  <div class="bg-pattern"></div>
+  <div style="padding: 50px 80px; display:flex; flex-direction:column; height:100%;">
+    <div class="slide-label">תשואות פיננסיות</div>
+    <h2 class="slide-title">מה מקבל המשקיע</h2>
+    <div class="gold-line"></div>
+
+    <div class="returns-layout">
+      <div>
+        <div class="return-hero">
+          <div class="return-moic-label" style="margin-top:0; margin-bottom:8px;">MOIC</div>
+          <div class="return-moic">1.83×</div>
+          <div class="return-moic-label">כפולת הכסף</div>
+          <div style="width:1px; height:32px; background:rgba(201,168,76,0.3); margin:16px auto;"></div>
+          <div class="return-irr-label" style="margin-bottom:6px;">IRR שנתי</div>
+          <div class="return-irr">27.8%</div>
+          <div class="return-irr-label">תשואה פנימית</div>
+        </div>
+
+        <div style="margin-top:20px;">
+          <div class="timeline-bar">
+            <div style="font-size:12px; color:var(--muted); margin-bottom:4px;">אופק השקעה — 3 שנים</div>
+            <div class="timeline-bar-track">
+              <div class="timeline-bar-fill"></div>
+            </div>
+            <div class="timeline-markers">
+              <span>היום</span>
+              <span>שנה 1 — בנייה</span>
+              <span>שנה 2 — בנייה</span>
+              <span>שנה 3 — מכירות + חלוקה</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <div style="background:rgba(255,255,255,0.03); border:1px solid rgba(201,168,76,0.15); border-radius:16px; padding:28px;">
+          <div style="font-size:13px; font-weight:700; color:var(--gold); letter-spacing:2px; text-transform:uppercase; margin-bottom:16px;">מודל פיננסי</div>
+          <table class="return-table">
+            <tr><td>השקעה כוללת (הון עצמי)</td><td>48.5M CZK</td></tr>
+            <tr><td>חלק צ׳כיה ישראל</td><td>~48.5M CZK</td></tr>
+            <tr><td>הכנסות צפויות ממכירות</td><td>~330M CZK</td></tr>
+            <tr><td>עלות בנייה (ליווי בנקאי)</td><td>~215M CZK</td></tr>
+            <tr><td>רווח גולמי משוער</td><td>~115M CZK</td></tr>
+            <tr><td>חלק ישראל (50%)</td><td>~57.5M CZK</td></tr>
+            <tr><td>השקעה מינימלית</td><td>1,000,000 CZK</td></tr>
+            <tr style="border-top:1px solid rgba(201,168,76,0.3) !important;"><td style="color:var(--gold); font-weight:700;">IRR שנתי</td><td style="color:var(--gold); font-size:18px; font-weight:800;">27.8%</td></tr>
+          </table>
+        </div>
+
+        <div style="margin-top:16px; background:rgba(201,168,76,0.06); border:1px solid rgba(201,168,76,0.2); border-radius:12px; padding:18px 20px; font-size:13px; color:var(--muted); line-height:1.7;">
+          <strong style="color:var(--gold);">📌 השוואה:</strong> בעסקת Emil Kolben הראשונה שלנו — משקיעים קיבלו <strong style="color:var(--white);">100% תשואה בפחות משנתיים</strong>. עסקת מלאדה מורכבת יותר, אבל גם הפוטנציאל גדול יותר.
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════
+     SLIDE 12 — RISK MANAGEMENT
+══════════════════════════════════════════ -->
+<div class="slide" id="slide-12">
+  <div class="bg-pattern"></div>
+  <div style="padding: 50px 80px; display:flex; flex-direction:column; height:100%;">
+    <div class="slide-label">ניהול סיכונים</div>
+    <h2 class="slide-title">מגן ומוגן</h2>
+    <div class="gold-line"></div>
+
+    <div class="risk-grid">
+      <div class="risk-card">
+        <div class="risk-header">
+          <div class="risk-icon-wrap">📜</div>
+          <div class="risk-title">סיכון תכנוני / היתרים</div>
+        </div>
+        <ul class="risk-items">
+          <li>היתר בנייה מאושר ובתוקף — סיכון ההיתרים אפסי</li>
+          <li>BCD Group מוביל תהליכי רישוי מעל 20 שנה</li>
+          <li>שוק בנייה מוסדר ויציב באיחוד האירופי</li>
+          <li>ניסיון מוכח בצ׳כיה עם פרויקטים דומים</li>
+        </ul>
+      </div>
+
+      <div class="risk-card">
+        <div class="risk-header">
+          <div class="risk-icon-wrap">🏦</div>
+          <div class="risk-title">סיכון פיננסי / מימון</div>
+        </div>
+        <ul class="risk-items">
+          <li>ליווי בנקאי מגן על הון המשקיעים בשלב הבנייה</li>
+          <li>מכירות מוקדמות (פריסייל) מקטינות ריסק שיווקי</li>
+          <li>ריבית יורדת בצ׳כיה — מוזילה עלויות מימון</li>
+          <li>אין חשיפה למטבע חוץ (CZK → CZK)</li>
+        </ul>
+      </div>
+
+      <div class="risk-card">
+        <div class="risk-header">
+          <div class="risk-icon-wrap">📉</div>
+          <div class="risk-title">סיכון שוק / מכירות</div>
+        </div>
+        <ul class="risk-items">
+          <li>ביקוש מוכח — 23,000+ עובדי סקודה ברדיוס ישיר</li>
+          <li>Skanska בוחרת את אותו מתחם — אימות עצמאי</li>
+          <li>מחסור בהיצע — לא פרויקטים חדשים מתחרים</li>
+          <li>מחירי דיור עולים עקבית בצ׳כיה 20 שנה</li>
+        </ul>
+      </div>
+
+      <div class="risk-card">
+        <div class="risk-header">
+          <div class="risk-icon-wrap">⚖️</div>
+          <div class="risk-title">סיכון משפטי / שותפות</div>
+        </div>
+        <ul class="risk-items">
+          <li>BCD Group שותף מוכח עם ניסיון 20+ שנה</li>
+          <li>הסכמי שותפות מפורטים עם עורכי דין צ׳כיים</li>
+          <li>מסגרת משפטית של האיחוד האירופי</li>
+          <li>ניסיון קודם מוצלח עם BCD בפרויקטי קולין</li>
+        </ul>
+      </div>
+
+      <div class="risk-card">
+        <div class="risk-header">
+          <div class="risk-icon-wrap">🔨</div>
+          <div class="risk-title">סיכון ביצוע / בנייה</div>
+        </div>
+        <ul class="risk-items">
+          <li>BCD Group מנהל את הבנייה — מומחיות מוכחת</li>
+          <li>קבלנים מקומיים מנוסים ומוכרים</li>
+          <li>פיקוח הנדסי עצמאי לאורך הפרויקט</li>
+          <li>תקציב עם מרווח ביטחון לחריגות</li>
+        </ul>
+      </div>
+
+      <div class="risk-card">
+        <div class="risk-header">
+          <div class="risk-icon-wrap">🌐</div>
+          <div class="risk-title">סיכון מקרו כלכלי</div>
+        </div>
+        <ul class="risk-items">
+          <li>כלכלת צ׳כיה — יציבה, חבר EU ו-NATO</li>
+          <li>אבטלה 2.6% — הנמוכה ביותר ב-OECD</li>
+          <li>מחירי דיור לא ירדו אפילו במשבר 2008</li>
+          <li>מסלול כניסה לאיחוד המוניטרי האירופי (אירו)</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════
+     SLIDE 13 — PIPELINE (KOLÍN)
+══════════════════════════════════════════ -->
+<div class="slide" id="slide-13">
+  <div class="kolín-layout">
+    <div class="kolín-imgs">
+      <img class="img-top" src="images/kolin/render-002.jpg" alt="Kolín Render">
+      <img class="img-bot" src="images/kolin/render-004.jpg" alt="Kolín Render 2">
+    </div>
+    <div class="kolín-content">
+      <div class="slide-label">פרויקט פעיל — קולין</div>
+      <h2 class="slide-title" style="font-size:clamp(22px,3vw,36px);">Rezidence Hradební<br><span style="color:var(--gold);">קולין, 70 יחידות</span></h2>
+      <div class="gold-line"></div>
+
+      <p style="font-size:14px; color:var(--muted); line-height:1.7; margin-bottom:20px;">
+        פרויקט בשיתוף BCD Group — <strong style="color:var(--white);">עלה לאוויר יוני 2026</strong>, מכירות החלו, הבנייה בעיצומה. 70 דירות ו-1,200 מ״ר מסחרי. ביקוש גבוה — מיקום מרכזי מצוין בעיר קולין.
+      </p>
+
+      <div class="project-spec-grid" style="margin-top:0;">
+        <div class="spec-item">
+          <div class="spec-label">יחידות</div>
+          <div class="spec-value">70 דירות</div>
+        </div>
+        <div class="spec-item">
+          <div class="spec-label">מסחרי</div>
+          <div class="spec-value">1,200 מ״ר</div>
+        </div>
+        <div class="spec-item">
+          <div class="spec-label">שותף</div>
+          <div class="spec-value">BCD Group</div>
+        </div>
+        <div class="spec-item">
+          <div class="spec-label">סטטוס</div>
+          <div class="spec-value" style="color:#4ade80;">בנייה ◆</div>
+        </div>
+      </div>
+
+      <div style="margin-top:20px; padding:16px 20px; background:rgba(255,255,255,0.03); border:1px solid rgba(201,168,76,0.12); border-radius:12px;">
+        <div style="font-size:12px; color:var(--gold); font-weight:700; letter-spacing:1px; text-transform:uppercase; margin-bottom:10px;">גם בפייפליין — קולין 2</div>
+        <div style="font-size:13px; color:var(--muted); line-height:1.6;">
+          <strong style="color:var(--light);">86 יחידות + 300 מ״ר מסחרי</strong> — פרויקט שני בקולין, שלבי הוצאת היתר. ביחד עם פרויקט קולין 1 — <strong style="color:var(--white);">156 דירות</strong> בעיר אחת.
+        </div>
+      </div>
+
+      <div style="margin-top:16px; padding:16px 20px; background:rgba(255,255,255,0.03); border:1px solid rgba(201,168,76,0.12); border-radius:12px;">
+        <div style="font-size:12px; color:var(--gold); font-weight:700; letter-spacing:1px; text-transform:uppercase; margin-bottom:10px;">פרויקטים נוספים בפייפליין</div>
+        <div style="font-size:13px; color:var(--muted); line-height:1.7;">
+          🔹 <strong style="color:var(--light);">Korandova, פילזן</strong> — 45 יח׳ פריסייל, מרכז העיר. ביקוש ענק, מעט פרויקטים חדשים.<br>
+          🔹 <strong style="color:var(--light);">Františka Formana, אוסטרבה</strong> — 39 יח׳, תכנון אדריכלי.<br>
+          🔹 <strong style="color:var(--light);">Bytový dům Horní, אוסטרבה</strong> — ~101 יח׳ + 1,800 מ״ר מסחרי.
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════
+     SLIDE 14 — INVESTMENT TERMS + CTA
+══════════════════════════════════════════ -->
+<div class="slide" id="slide-14">
+  <div class="bg-pattern"></div>
+  <div class="bg-grid"></div>
+  <div style="padding: 50px 80px; display:flex; flex-direction:column; height:100%;">
+    <div class="slide-label">השקעה</div>
+    <h2 class="slide-title">תנאי ההשקעה</h2>
+    <div class="gold-line"></div>
+
+    <div class="cta-layout">
+      <div>
+        <div style="font-size:13px; font-weight:700; color:var(--gold); letter-spacing:2px; text-transform:uppercase; margin-bottom:16px;">פרטי ההשקעה</div>
+        <table class="terms-table">
+          <tr><td>סוג ההשקעה</td><td>השקעה ישירה בפרויקט נדל״ן</td></tr>
+          <tr><td>מינימום השקעה</td><td>1,000,000 CZK (~₪190,000)</td></tr>
+          <tr><td>מטבע</td><td>קורונה צ׳כית (CZK)</td></tr>
+          <tr><td>IRR שנתי</td><td style="color:var(--gold);">27.8%</td></tr>
+          <tr><td>כפולת הכסף (MOIC)</td><td style="color:var(--gold);">1.83×</td></tr>
+          <tr><td>אופק השקעה</td><td>~3 שנים</td></tr>
+          <tr><td>חלוקת רווחים</td><td>50/50 עם BCD לאחר החזרת הון</td></tr>
+          <tr><td>קדימות</td><td>החזרת הון לפני חלוקה</td></tr>
+          <tr><td>ניהול</td><td>צ׳כיה ישראל + BCD Group</td></tr>
+          <tr><td>היתר בנייה</td><td style="color:#4ade80;">✓ בתוקף</td></tr>
+          <tr><td>חלון השקעה</td><td>פתוח — עד השלמת הגיוס</td></tr>
+        </table>
+      </div>
+
+      <div class="cta-box">
+        <div class="cta-title">מעוניינים להשתתף?</div>
+        <div class="cta-sub">
+          אנו מגייסים משקיעים מוסמכים לעסקה הגדולה ביותר שלנו עד כה. ההון שגויס עד כה מאפשר לנו להתקדם — אבל יש עוד מקום לשותפים פיננסיים נבחרים.
+        </div>
+
+        <div class="cta-contact">
+          <div class="contact-row">
+            <div class="contact-icon">👤</div>
+            <div class="contact-info">
+              <div class="name">מנחם שופל</div>
+              <div>שותף מייסד, צ׳כיה ישראל</div>
+            </div>
+          </div>
+          <div class="contact-row">
+            <div class="contact-icon">📧</div>
+            <div class="contact-info">
+              <div class="name">mshofel@gmail.com</div>
+            </div>
+          </div>
+          <div class="contact-row">
+            <div class="contact-icon">💼</div>
+            <div class="contact-info">
+              <div>המסמכים המלאים, הסכם ההשקעה ותוכנית עסקית מפורטת זמינים לבדיקה לאחר חתימת NDA.</div>
+            </div>
+          </div>
+        </div>
+
+        <div style="margin-top:20px; padding-top:16px; border-top:1px solid rgba(201,168,76,0.2);">
+          <div style="font-size:12px; color:var(--muted); line-height:1.6;">
+            ✓ צוות ניהולי מוכח עם 8 עסקאות מוצלחות<br>
+            ✓ שותפות עם BCD Group בעלת 20+ שנות ניסיון<br>
+            ✓ היתר בנייה בתוקף — ריסק נמוך משמעותית
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════
+     SLIDE 15 — DISCLAIMER
+══════════════════════════════════════════ -->
+<div class="slide" id="slide-15">
+  <div style="position:absolute; inset:0; background:radial-gradient(ellipse 60% 60% at 50% 50%, rgba(26,58,110,0.3) 0%, transparent 70%);"></div>
+  <div class="disc-content" style="position:relative; z-index:2; padding:60px 100px; max-width:800px; margin:auto;">
+    <div class="disc-title">הצהרת הגבלת אחריות</div>
+    <div class="gold-line center"></div>
+
+    <p class="disc-text">
+      מסמך זה הוכן על ידי צ׳כיה ישראל למטרות מידע בלבד ואינו מהווה הצעה לרכישת ניירות ערך, ייעוץ השקעות, ייעוץ משפטי או ייעוץ מס. המידע הכלול במסמך זה מבוסס על הנחות ותחזיות שאינן ניתנות לערובה, ותוצאות בפועל עשויות להיות שונות באופן מהותי.
+    </p>
+    <p class="disc-text">
+      השקעה בנדל״ן כרוכה בסיכונים, לרבות סיכון אובדן קרן. ביצועי עבר אינם מעידים על תוצאות עתידיות. מסמך זה מיועד למשקיעים מוסמכים בלבד. אין להפיצו ללא אישור מפורש בכתב מצ׳כיה ישראל.
+    </p>
+    <p class="disc-text">
+      כל ההשקעות כפופות לתנאים ולהגבלות שייקבעו בהסכם ההשקעה הסופי. לפני כל החלטת השקעה, מומלץ לפנות ליועץ פיננסי ומשפטי מורשה.
+    </p>
+    <p class="disc-text" style="margin-bottom:0;">
+      © 2025 צ׳כיה ישראל. כל הזכויות שמורות. סודי ואישי.
+    </p>
+
+    <div style="margin-top:32px;" class="logo-footer">
+      <img src="images/logo.jpeg" alt="CI Logo">
+      <span>Czechia Israel</span>
+    </div>
+  </div>
+</div>
+
+</div><!-- /presentation -->
+
+<!-- Navigation -->
+<nav class="nav" id="mainNav">
+  <button class="nav-btn" id="prevBtn" onclick="changeSlide(-1)">&#8594;</button>
+  <div class="nav-dots" id="navDots"></div>
+  <span class="slide-counter" id="slideCounter">1 / 15</span>
+  <button class="nav-btn" id="nextBtn" onclick="changeSlide(1)">&#8592;</button>
+</nav>
+
+<script>
+const slides = document.querySelectorAll('.slide');
+const dotsContainer = document.getElementById('navDots');
+const counter = document.getElementById('slideCounter');
+let current = 0;
+
+// Build dots
+slides.forEach((_, i) => {
+  const d = document.createElement('div');
+  d.className = 'dot' + (i === 0 ? ' active' : '');
+  d.onclick = () => goTo(i);
+  dotsContainer.appendChild(d);
+});
+
+function goTo(n) {
+  slides[current].classList.remove('active');
+  slides[current].classList.add('prev');
+  setTimeout(() => slides[current < n ? current : n].classList.remove('prev'), 600);
+
+  const old = current;
+  current = Math.max(0, Math.min(n, slides.length - 1));
+
+  slides[current].classList.add('active');
+  document.querySelectorAll('.dot').forEach((d, i) => d.classList.toggle('active', i === current));
+  counter.textContent = (current + 1) + ' / ' + slides.length;
+
+  setTimeout(() => slides[old].classList.remove('prev'), 600);
+}
+
+function changeSlide(dir) {
+  goTo(current + dir);
+}
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'ArrowLeft' || e.key === 'ArrowDown') changeSlide(1);
+  if (e.key === 'ArrowRight' || e.key === 'ArrowUp') changeSlide(-1);
+  if (e.key === 'Home') goTo(0);
+  if (e.key === 'End') goTo(slides.length - 1);
+});
+
+// Touch support
+let tx = 0;
+document.addEventListener('touchstart', e => tx = e.touches[0].clientX, {passive:true});
+document.addEventListener('touchend', e => {
+  const dx = e.changedTouches[0].clientX - tx;
+  if (Math.abs(dx) > 50) changeSlide(dx > 0 ? -1 : 1);
+}, {passive:true});
+</script>
+</body>
+</html>
